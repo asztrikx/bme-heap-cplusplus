@@ -1,4 +1,4 @@
-#include "heap.h"
+#include "include/heap/binaryHeap.h"
 #include <iostream>
 #include <fstream>
 #include <assert.h>
