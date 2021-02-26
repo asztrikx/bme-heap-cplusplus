@@ -7,6 +7,12 @@
 
 namespace Dijkstra {
 
+enum Exception
+{
+	ExceptionFileNotexist,
+	ExceptionOutofbounds,
+};
+
 class Dijkstra {
 	struct edge {
 		int from;
@@ -124,12 +130,6 @@ class Dijkstra {
 		this->startIndex = startIndex;
 		solve();
 	}
-};
-
-enum Exception
-{
-	ExceptionFileNotexist,
-	ExceptionOutofbounds,
 };
 
 } // namespace Dijkstra
