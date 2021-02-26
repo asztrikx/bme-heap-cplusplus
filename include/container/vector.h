@@ -1,20 +1,28 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <initializer_list>
+#include "container.h"
 
 namespace Container {
 
 template <typename T>
 class Vector {
+	/// Allocated memory's size
 	int capacity;
+
+	/// T[capacity]
 	T *data = nullptr;
 
-	void realloc(int length, int capacityNew) {
+	/// @brief Changes `data`-s *allocated* size
+	/// @param capacityNew `data`'s new *allocated* size
+	/// @exception Container::ExceptionDataLoose capacityNew < length
+	void realloc(int capacityNew) {
 		if (capacityNew < length) {
-			throw "Vector realloc loosing data";
+			throw Container::ExceptionDataLoose;
 		}
 
-		T *dataNew = new T[capacityNew];
+		capacity = capacityNew;
+		T *dataNew = new T[capacity];
 		for (int i = 0; i < length; i++) {
 			dataNew[i] = data[i];
 		}
@@ -23,13 +31,54 @@ class Vector {
 	}
 
   public:
+	/// length is the number of used elements in `data`
 	int length;
-	void resize(int size, T const &def) {
+
+	/// @brief Clears then fills with `value`
+	/// @param size number of elements to insert
+	/// @param value value to be inserted
+	void resize(int size, T const &value) {
 		clear();
 		for (int i = 0; i < size; i++) {
-			pushBack(def);
+			pushBack(value);
 		}
 	}
+
+	/// @brief Deletes data, then recreates it with `capacity` = 1
+	void clear() {
+		delete[] data;
+		length = 0;
+		capacity = 1;
+		data = new T[1];
+	}
+
+	/// @brief data[length] = value. Capacity is doubled if full
+	/// @param size number of elements to insert
+	/// @param value value to be inserted
+	void pushBack(T const &value) {
+		if (capacity == length) {
+			realloc(2 * capacity);
+		}
+
+		length++;
+		data[length - 1] = value;
+	}
+
+	/// @brief Marks last element as garbage. Decreases capacity if needed
+	/// @param size number of elements to insert
+	/// @param value value to be inserted
+	/// @return last element
+	T popBack() {
+		T result = data[length - 1];
+		length--;
+
+		if (capacity == 4 * length) {
+			realloc(capacity / 2);
+		}
+		return result;
+	}
+
+	//operator
 	Vector<T> &operator=(Vector<T> const &vector) {
 		length = vector.length;
 		capacity = vector.capacity;
@@ -39,6 +88,17 @@ class Vector {
 		}
 		return *this;
 	}
+	T &operator[](int index) const {
+		if (index >= length) {
+			throw Container::ExceptionIndexOutofbounds;
+		}
+		return data[index];
+	}
+	void operator+=(T const &value) {
+		pushBack(value);
+	}
+
+	//ctor, dtor
 	Vector() {
 		clear();
 	}
@@ -53,37 +113,6 @@ class Vector {
 	}
 	~Vector() {
 		delete[] data;
-	}
-	void clear() {
-		delete[] data;
-		length = 0;
-		capacity = 1;
-		data = new T[1];
-	}
-	T &operator[](int index) const {
-		if (index >= length) {
-			throw "Vector[] out of bounds";
-		}
-		return data[index];
-	}
-	void pushBack(T const &value) {
-		if (capacity == length) {
-			capacity *= 2;
-			realloc(length, capacity);
-		}
-
-		length++;
-		data[length - 1] = value;
-	}
-	T popBack() {
-		T result = data[length - 1];
-		length--;
-
-		if (length * 4 == capacity) {
-			capacity /= 2;
-			realloc(length, capacity);
-		}
-		return result;
 	}
 };
 

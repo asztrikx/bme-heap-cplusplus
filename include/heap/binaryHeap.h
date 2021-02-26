@@ -3,6 +3,7 @@
 #include <algorithm>
 #include "../container/vector.h"
 #include <assert.h>
+#include "heap.h"
 
 namespace Heap {
 
@@ -10,36 +11,57 @@ namespace Heap {
 template <typename T>
 class BinaryHeap {
 	Container::Vector<T> data;
+
+	/// @brief Parent's index in data if exists
+	/// @param index Node's index whose parent we want
 	int parentIndex(int index) const {
 		return (index - 1) / 2;
 	}
+	/// @brief Left child's index in data if exists
+	/// @param index Node's index whose child we want
 	int childLeftIndex(int index) const {
 		return 2 * index + 1;
 	}
+	/// @brief Right child's index in data if exists
+	/// @param index Node's index whose child we want
 	int childRightIndex(int index) const {
 		return 2 * index + 2;
 	}
+
+	/// @brief Parent's value in data
+	/// @param index Node's index whose parent we want
+	/// @exception Heap::ExceptionIndexOutofbounds
 	T &parent(int index) const {
 		index = parentIndex(index);
 		if (index >= data.length) {
-			throw "BinaryHeap::parent() out of bounds";
+			throw Heap::ExceptionIndexOutofbounds;
 		}
 		return data[index];
 	}
+	/// @brief Left child's value in data
+	/// @param index Node's index whose child we want
+	/// @exception Heap::ExceptionIndexOutofbounds
 	T &childLeft(int index) const {
 		index = childLeftIndex(index);
 		if (index >= data.length) {
-			throw "BinaryHeap::childLeft() out of bounds";
+			throw Heap::ExceptionIndexOutofbounds;
 		}
 		return data[index];
 	}
+	/// @brief Right child's value in data
+	/// @param index Node's index whose child we want
+	/// @exception Heap::ExceptionIndexOutofbounds
 	T &childRight(int index) const {
 		index = childRightIndex(index);
 		if (index >= data.length) {
-			throw "BinaryHeap::childRight() out of bounds";
+			throw Heap::ExceptionIndexOutofbounds;
 		}
 		return data[index];
 	}
+
+	/// @brief Child's index with lesser value
+	/// @param index Node's index whose child we want
+	/// @return -1 if lead node
 	int minChildIndex(int index) const {
 		if (childLeftIndex(index) >= data.length && childRightIndex(index) >= data.length) {
 			return -1;
@@ -55,17 +77,103 @@ class BinaryHeap {
 		}
 		return childRightIndex(index);
 	}
+	/// @brief Child with lesser value
+	/// @param index Node's index whose child we want
+	/// @exception Heap::ExceptionIndexOutofbounds
 	T &minChild(int index) const {
 		if (minChildIndex(index) == -1) {
-			throw "idk";
+			throw Heap::ExceptionIndexOutofbounds;
 		}
 		return data[minChildIndex(index)];
 	}
 
   public:
+	/// @brief Clears heap
 	void clear() {
 		data.clear();
 	}
+
+	/// @brief Inserts value into heap
+	/// @param value Value to be inserted
+	void insert(T const &value) {
+		data.pushBack(value);
+
+		//fix heap
+		int index = data.length - 1;
+		while (index != 0 && parent(index) > value) {
+			data[index] = parent(index);
+			index = parentIndex(index);
+		}
+		data[index] = value;
+	}
+
+	/// @brief Inserts Container::Vector of values into heap
+	/// @param values Container::Vector of values to be inserted
+	void insert(Container::Vector<T> const &values) {
+		for (int i = 0; i < values.length; i++) {
+			insert(values[i]);
+		}
+	}
+
+	/// @brief Peek the lowest element
+	/// @return Lowest element
+	/// @exception Heap::ExceptionEmpty
+	T top() const {
+		if (empty()) {
+			throw Heap::ExceptionEmpty;
+		}
+		return data[0];
+	}
+
+	/// @brief Remove the lowest element
+	/// @return Lowest element
+	/// @exception Heap::ExceptionEmpty
+	T pop() {
+		if (empty()) {
+			throw Heap::ExceptionEmpty;
+		}
+
+		T result = data[0];
+
+		//fix heap
+		T last = data.popBack();
+		//if it was the last item we can not move it back again
+		if (data.length != 0) {
+			int index = 0;
+			while (minChildIndex(index) != -1 && minChild(index) < last) {
+				data[index] = minChild(index);
+				index = minChildIndex(index);
+			}
+			data[index] = last;
+		}
+
+		return result;
+	}
+
+	/// @brief Is heap empty
+	bool empty() const {
+		return data.length == 0;
+	}
+
+	/// @brief Number of element in heap
+	int length() const {
+		return data.length;
+	}
+
+	/// @brief Sorts the given vector
+	/// @param vector vector to be sorted
+	static void Sort(Container::Vector<T> const &vector) {
+		Heap::BinaryHeap<T> heap;
+		for (int i = 0; i < vector.length; i++) {
+			heap += vector[i];
+		}
+
+		for (int i = 0; i < vector.length; i++) {
+			vector[i] = heap.pop();
+		}
+	}
+
+	//operator
 	BinaryHeap<T> &operator=(BinaryHeap<T> const &heap) {
 		data = heap.data;
 		return *this;
@@ -78,48 +186,8 @@ class BinaryHeap {
 		insert(values);
 		return *this;
 	}
-	void insert(T const &value) {
-		data.pushBack(value);
-		int index = data.length - 1;
-		while (index != 0 && parent(index) > value) {
-			data[index] = parent(index);
-			index = parentIndex(index);
-		}
-		data[index] = value;
-	}
-	void insert(Container::Vector<T> const &values) {
-		for (int i = 0; i < values.length; i++) {
-			insert(values[i]);
-		}
-	}
-	T top() const {
-		if (empty()) {
-			throw "BinaryHeap top() heap is empty";
-		}
-		return data[0];
-	}
-	T pop() {
-		if (empty()) {
-			throw "BinaryHeap pop() heap is empty";
-		}
 
-		T result = data[0];
-		T last = data.popBack();
-
-		if (data.length != 0) {
-			int index = 0;
-			while (minChildIndex(index) != -1 && minChild(index) < last) {
-				data[index] = data[minChildIndex(index)];
-				index = minChildIndex(index);
-			}
-			data[index] = last;
-		}
-
-		return result;
-	}
-	bool empty() const {
-		return data.length == 0;
-	}
+	//unit test
 	static void test() {
 		BinaryHeap<int> heap;
 		heap.insert(4);

@@ -10,15 +10,18 @@ int main() {
 	std::ifstream file("sort.txt", std::ifstream::in);
 	assert(file.good());
 
-	Heap::BinaryHeap<int> heap;
+	Container::Vector<int> vector;
 	int v;
 	while (file >> v) {
-		heap += v;
-	}
-	for (int i = 1; i <= 100; i++) {
-		assert(heap.pop() == i);
+		vector += v;
 	}
 	file.close();
+
+	Heap::BinaryHeap<int>::Sort(vector);
+	for (int i = 0; i < vector.length; i++) {
+		std::cout << vector[i] << " ";
+	}
+	std::cout << std::endl;
 
 	//dijsktra
 	Dijkstra::Dijkstra d("graph.txt", 0);

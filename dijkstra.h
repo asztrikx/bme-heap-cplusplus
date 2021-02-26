@@ -1,9 +1,8 @@
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
-#include "include/container/vector.h"
-#include <iostream>
 #include "include/heap/binaryHeap.h"
 #include "include/container/vector.h"
+#include <iostream>
 #include <fstream>
 
 namespace Dijkstra {
@@ -20,28 +19,34 @@ class Dijkstra {
 			return weight > other.weight;
 		}
 	};
+
+	Container::Vector<Container::Vector<edge>> graph;
+
+	/// @brief Helper function for `printPath`
 	void printPathRec(int to) {
-		if (to == start) {
-			std::cout << start;
+		if (to == startIndex) {
+			std::cout << startIndex;
 			return;
 		}
 		printPathRec(parents[to]);
 		std::cout << " " << to;
 	}
-	Container::Vector<Container::Vector<edge>> graph;
-	void read(char const *filename, int start) {
+
+	/// @brief Read file into `graph`
+	/// @exception Dijkstra::ExceptionFileNotexist
+	void read(char const *filename) {
 		//file open
 		std::ifstream file(filename, std::ifstream::in);
 		if (file.fail()) {
-			throw "file not found";
+			throw ExceptionFileNotexist;
 		}
 
 		//file read;
 		int n;
 		file >> n;
-		this->start = start;
+
 		parents.resize(n, -1);
-		times.resize(n, -1);
+		weights.resize(n, -1);
 		graph.resize(n, Container::Vector<edge>());
 		for (int i = 0; i < n; i++) {
 			int mi;
@@ -57,36 +62,23 @@ class Dijkstra {
 		file.close();
 	}
 
-  public:
-	Container::Vector<int> parents;
-	Container::Vector<int> times;
-	int start;
-	void printPath(int to) {
-		if (to < 0 || to > parents.length) {
-			throw "Dijkstra::printPath() to out of bound";
-		}
-		std::cout << "(" << times[to] << "): ";
-		printPathRec(to);
-		std::cout << std::endl;
-	}
-	Dijkstra(char const *filename, int start) {
-		read(filename, start);
-
+	/// @brief Calculates all the shortest paths from `startIndex`
+	void solve() {
 		Heap::BinaryHeap<edge> priorityQueue;
 		priorityQueue.insert(edge{-1, 0, 0});
 		while (!priorityQueue.empty()) {
 			edge current = priorityQueue.pop();
 
-			if (times[current.to] != -1) {
+			if (weights[current.to] != -1) {
 				continue;
 			}
-			times[current.to] = current.weight;
+			weights[current.to] = current.weight;
 			parents[current.to] = current.from;
 
 			for (int i = 0; i < graph[current.to].length; i++) {
 				edge next = graph[current.to][i];
 
-				if (times[next.to] != -1) {
+				if (weights[next.to] != -1) {
 					continue;
 				}
 				priorityQueue.insert({
@@ -97,6 +89,47 @@ class Dijkstra {
 			}
 		}
 	}
+
+  public:
+	/// Each node's parent index in the route-tree from `startIndex` to i
+	Container::Vector<int> parents;
+
+	/// Each node's weight in the route-tree from `startIndex` to i
+	Container::Vector<int> weights;
+
+	/// Node's index from which the shortest paths are known
+	int startIndex;
+
+	/// @brief Prints path from `startIndex` to `to`
+	/// @exception Dijkstra::ExceptionOutofbounds
+	void printPath(int to) {
+		if (to < 0 || to > parents.length) {
+			throw ExceptionOutofbounds;
+		}
+
+		std::cout << "(" << weights[to] << "): ";
+
+		if (weights[to] == -1) {
+			std::cout << "-";
+		} else {
+			printPathRec(to);
+		}
+
+		std::cout << std::endl;
+	}
+
+	//ctor
+	Dijkstra(char const *filename, int startIndex) {
+		read(filename);
+		this->startIndex = startIndex;
+		solve();
+	}
+};
+
+enum Exception
+{
+	ExceptionFileNotexist,
+	ExceptionOutofbounds,
 };
 
 } // namespace Dijkstra
