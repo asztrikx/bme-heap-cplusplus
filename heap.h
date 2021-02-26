@@ -72,7 +72,7 @@ class BinaryHeap {
 		}
 		data[index] = value;
 	}
-	void insert(Container::Vector<T> values) {
+	void insert(Container::Vector<T> &values) {
 		for (int i = 0; i < values.length; i++) {
 			insert(values[i]);
 		}
@@ -111,12 +111,16 @@ class BinaryHeap {
 		assert(heap.pop() == 4);
 		assert(heap.empty());
 
-		Container::Vector values({1, 2, 3, 4});
+		Container::Vector values({3, 9, 7, 2, 1, 85, 36, 6});
 		heap.insert(values);
 		assert(heap.pop() == 1);
 		assert(heap.pop() == 2);
 		assert(heap.pop() == 3);
-		assert(heap.pop() == 4);
+		assert(heap.pop() == 6);
+		assert(heap.pop() == 7);
+		assert(heap.pop() == 9);
+		assert(heap.pop() == 36);
+		assert(heap.pop() == 85);
 		assert(heap.empty());
 	}
 };
