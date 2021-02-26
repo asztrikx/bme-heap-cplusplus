@@ -50,12 +50,12 @@ class BinaryHeap {
 		if (childRightIndex(index) >= data.length) {
 			return childLeftIndex(index);
 		}
-		if (childLeft(index) <= childRight(index)) {
+		if (childLeft(index) < childRight(index)) {
 			return childLeftIndex(index);
 		}
 		return childRightIndex(index);
 	}
-	int minChild(int index) {
+	T &minChild(int index) {
 		if (minChildIndex(index) == -1) {
 			throw "idk";
 		}
@@ -63,6 +63,21 @@ class BinaryHeap {
 	}
 
   public:
+	void clear() {
+		data.clear();
+	}
+	BinaryHeap<T> operator=(BinaryHeap<T> heap) {
+		BinaryHeap<T> heapCopy(data);
+		return heapCopy;
+	}
+	BinaryHeap<T> &operator+=(T value) {
+		insert(value);
+		return *this;
+	}
+	BinaryHeap<T> &operator+=(Container::Vector<T> &values) {
+		insert(values);
+		return *this;
+	}
 	void insert(T value) {
 		data.pushBack(value);
 		int index = data.length - 1;

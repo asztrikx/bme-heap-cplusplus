@@ -24,14 +24,27 @@ class Vector {
 
   public:
 	int length;
-	Vector() {
-		clear();
-	}
-	Vector(T def, int size) {
+	void resize(int size, T &def) {
 		clear();
 		for (int i = 0; i < size; i++) {
 			pushBack(def);
 		}
+	}
+	Vector<T> operator=(Vector<T> vector) {
+		Vector<T> vectorCopy;
+		vectorCopy.length = length;
+		vectorCopy.capacity = capacity;
+		vectorCopy.data = new T[vectorCopy.capacity];
+		for (int i = 0; i < vectorCopy.length; i++) {
+			vectorCopy.data[i] = data[i];
+		}
+		return vectorCopy;
+	}
+	Vector() {
+		clear();
+	}
+	Vector(int size, T def) {
+		resize(size, def);
 	}
 	Vector(std::initializer_list<T> values) {
 		clear();
@@ -54,7 +67,7 @@ class Vector {
 		}
 		return data[index];
 	}
-	void pushBack(T value) {
+	void pushBack(T &value) {
 		if (capacity == length) {
 			capacity *= 2;
 			realloc(length, capacity);

@@ -1,4 +1,6 @@
 #include "include/heap/binaryHeap.h"
+#include "include/container/vector.h"
+#include "dijkstra.h"
 #include <iostream>
 #include <fstream>
 #include <assert.h>
@@ -11,9 +13,14 @@ int main() {
 	Heap::BinaryHeap<int> heap;
 	int v;
 	while (file >> v) {
-		heap.insert(v);
+		heap += v;
 	}
 	for (int i = 1; i <= 100; i++) {
 		assert(heap.pop() == i);
 	}
+	file.close();
+
+	//dijsktra
+	Dijkstra::Dijkstra d("graph.txt");
+	d.printPath(5);
 }
