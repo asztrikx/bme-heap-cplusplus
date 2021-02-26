@@ -10,37 +10,37 @@ namespace Heap {
 template <typename T>
 class BinaryHeap {
 	Container::Vector<T> data;
-	int parentIndex(int index) {
+	int parentIndex(int index) const {
 		return (index - 1) / 2;
 	}
-	int childLeftIndex(int index) {
+	int childLeftIndex(int index) const {
 		return 2 * index + 1;
 	}
-	int childRightIndex(int index) {
+	int childRightIndex(int index) const {
 		return 2 * index + 2;
 	}
-	T &parent(int index) {
+	T &parent(int index) const {
 		index = parentIndex(index);
 		if (index >= data.length) {
 			throw "BinaryHeap::parent() out of bounds";
 		}
 		return data[index];
 	}
-	T &childLeft(int index) {
+	T &childLeft(int index) const {
 		index = childLeftIndex(index);
 		if (index >= data.length) {
 			throw "BinaryHeap::childLeft() out of bounds";
 		}
 		return data[index];
 	}
-	T &childRight(int index) {
+	T &childRight(int index) const {
 		index = childRightIndex(index);
 		if (index >= data.length) {
 			throw "BinaryHeap::childRight() out of bounds";
 		}
 		return data[index];
 	}
-	int minChildIndex(int index) {
+	int minChildIndex(int index) const {
 		if (childLeftIndex(index) >= data.length && childRightIndex(index) >= data.length) {
 			return -1;
 		}
@@ -55,7 +55,7 @@ class BinaryHeap {
 		}
 		return childRightIndex(index);
 	}
-	T &minChild(int index) {
+	T &minChild(int index) const {
 		if (minChildIndex(index) == -1) {
 			throw "idk";
 		}
@@ -66,19 +66,19 @@ class BinaryHeap {
 	void clear() {
 		data.clear();
 	}
-	BinaryHeap<T> operator=(BinaryHeap<T> heap) {
-		BinaryHeap<T> heapCopy(data);
-		return heapCopy;
+	BinaryHeap<T> &operator=(BinaryHeap<T> const &heap) {
+		data = heap.data;
+		return *this;
 	}
-	BinaryHeap<T> &operator+=(T value) {
+	BinaryHeap<T> &operator+=(T const &value) {
 		insert(value);
 		return *this;
 	}
-	BinaryHeap<T> &operator+=(Container::Vector<T> &values) {
+	BinaryHeap<T> &operator+=(Container::Vector<T> const &values) {
 		insert(values);
 		return *this;
 	}
-	void insert(T value) {
+	void insert(T const &value) {
 		data.pushBack(value);
 		int index = data.length - 1;
 		while (index != 0 && parent(index) > value) {
@@ -87,12 +87,12 @@ class BinaryHeap {
 		}
 		data[index] = value;
 	}
-	void insert(Container::Vector<T> &values) {
+	void insert(Container::Vector<T> const &values) {
 		for (int i = 0; i < values.length; i++) {
 			insert(values[i]);
 		}
 	}
-	T top() {
+	T top() const {
 		if (empty()) {
 			throw "BinaryHeap top() heap is empty";
 		}
@@ -117,7 +117,7 @@ class BinaryHeap {
 
 		return result;
 	}
-	bool empty() {
+	bool empty() const {
 		return data.length == 0;
 	}
 	static void test() {

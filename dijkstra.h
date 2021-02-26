@@ -25,11 +25,11 @@ class Dijkstra {
 			std::cout << start;
 			return;
 		}
-		printPath(parents[to]);
+		printPathRec(parents[to]);
 		std::cout << " " << to;
 	}
 	Container::Vector<Container::Vector<edge>> graph;
-	void read(char const *filename) {
+	void read(char const *filename, int start) {
 		//file open
 		std::ifstream file(filename, std::ifstream::in);
 		if (file.fail()) {
@@ -39,6 +39,7 @@ class Dijkstra {
 		//file read;
 		int n;
 		file >> n;
+		this->start = start;
 		parents.resize(n, -1);
 		times.resize(n, -1);
 		graph.resize(n, Container::Vector<edge>());
@@ -47,6 +48,7 @@ class Dijkstra {
 			file >> mi;
 			for (int j = 0; j < mi; j++) {
 				edge e;
+				e.from = i;
 				file >> e.to;
 				file >> e.weight;
 				graph[i].pushBack(e);
@@ -67,8 +69,8 @@ class Dijkstra {
 		printPathRec(to);
 		std::cout << std::endl;
 	}
-	Dijkstra(char const *filename) {
-		read(filename);
+	Dijkstra(char const *filename, int start) {
+		read(filename, start);
 
 		Heap::BinaryHeap<edge> priorityQueue;
 		priorityQueue.insert(edge{-1, 0, 0});

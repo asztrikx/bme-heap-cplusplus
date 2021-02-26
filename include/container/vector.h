@@ -24,21 +24,20 @@ class Vector {
 
   public:
 	int length;
-	void resize(int size, T &def) {
+	void resize(int size, T const &def) {
 		clear();
 		for (int i = 0; i < size; i++) {
 			pushBack(def);
 		}
 	}
-	Vector<T> operator=(Vector<T> vector) {
-		Vector<T> vectorCopy;
-		vectorCopy.length = length;
-		vectorCopy.capacity = capacity;
-		vectorCopy.data = new T[vectorCopy.capacity];
-		for (int i = 0; i < vectorCopy.length; i++) {
-			vectorCopy.data[i] = data[i];
+	Vector<T> &operator=(Vector<T> const &vector) {
+		length = vector.length;
+		capacity = vector.capacity;
+		data = new T[vector.capacity];
+		for (int i = 0; i < vector.length; i++) {
+			data[i] = vector.data[i];
 		}
-		return vectorCopy;
+		return *this;
 	}
 	Vector() {
 		clear();
@@ -46,7 +45,7 @@ class Vector {
 	Vector(int size, T def) {
 		resize(size, def);
 	}
-	Vector(std::initializer_list<T> values) {
+	Vector(std::initializer_list<T> const &values) {
 		clear();
 		for (auto item = values.begin(); item != values.end(); item++) {
 			pushBack(*item);
@@ -61,20 +60,20 @@ class Vector {
 		capacity = 1;
 		data = new T[1];
 	}
-	T &operator[](int index) {
+	T &operator[](int index) const {
 		if (index >= length) {
 			throw "Vector[] out of bounds";
 		}
 		return data[index];
 	}
-	void pushBack(T &value) {
+	void pushBack(T const &value) {
 		if (capacity == length) {
 			capacity *= 2;
 			realloc(length, capacity);
 		}
 
-		data[length] = value;
 		length++;
+		data[length - 1] = value;
 	}
 	T popBack() {
 		T result = data[length - 1];

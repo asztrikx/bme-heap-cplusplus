@@ -21,6 +21,8 @@ int main() {
 	file.close();
 
 	//dijsktra
-	Dijkstra::Dijkstra d("graph.txt");
+	Dijkstra::Dijkstra d("graph.txt", 0);
 	d.printPath(5);
+
+	return 0;
 }
