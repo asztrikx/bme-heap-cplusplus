@@ -7,7 +7,7 @@ namespace Container {
 template <typename T>
 class Vector {
 	int capacity;
-	T *data;
+	T *data = nullptr;
 
 	void realloc(int length, int capacityNew) {
 		if (capacityNew < length) {
@@ -25,20 +25,28 @@ class Vector {
   public:
 	int length;
 	Vector() {
-		length = 0;
-		capacity = 1;
-		data = new T[1];
+		clear();
+	}
+	Vector(T def, int size) {
+		clear();
+		for (int i = 0; i < size; i++) {
+			pushBack(def);
+		}
 	}
 	Vector(std::initializer_list<T> values) {
-		length = 0;
-		capacity = 1;
-		data = new T[1];
+		clear();
 		for (auto item = values.begin(); item != values.end(); item++) {
 			pushBack(*item);
 		}
 	}
 	~Vector() {
 		delete[] data;
+	}
+	void clear() {
+		delete[] data;
+		length = 0;
+		capacity = 1;
+		data = new T[1];
 	}
 	T &operator[](int index) {
 		if (index >= length) {
