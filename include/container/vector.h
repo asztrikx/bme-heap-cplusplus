@@ -49,7 +49,7 @@ class Vector {
 		delete[] data;
 		length = 0;
 		capacity = 1;
-		data = new T[1];
+		data = new T[capacity];
 	}
 
 	/// @brief data[length] = value. Capacity is doubled if full
@@ -80,6 +80,7 @@ class Vector {
 
 	//operator
 	Vector<T> &operator=(Vector<T> const &vector) {
+		delete[] data;
 		length = vector.length;
 		capacity = vector.capacity;
 		data = new T[vector.capacity];
