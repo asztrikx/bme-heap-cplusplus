@@ -1,5 +1,5 @@
-#ifndef CONTAINER_GUARD
-#define CONTAINER_GUARD
+#ifndef VECTOR_H
+#define VECTOR_H
 #include <initializer_list>
 
 namespace Container {

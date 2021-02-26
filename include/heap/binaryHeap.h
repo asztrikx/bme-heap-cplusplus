@@ -1,7 +1,7 @@
-#ifndef HEAP_GUARD
-#define HEAP_GUARD
+#ifndef BINARYHEAP_H
+#define BINARYHEAP_H
 #include <algorithm>
-#include "container.h"
+#include "../container/vector.h"
 #include <assert.h>
 
 namespace Heap {
