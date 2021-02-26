@@ -100,7 +100,7 @@ class BinaryHeap {
 
 		//fix heap
 		int index = data.length - 1;
-		while (index != 0 && parent(index) > value) {
+		while (index != 0 && value < parent(index)) {
 			data[index] = parent(index);
 			index = parentIndex(index);
 		}

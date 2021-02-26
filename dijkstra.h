@@ -21,9 +21,6 @@ class Dijkstra {
 		bool operator<(edge other) const {
 			return weight < other.weight;
 		}
-		bool operator>(edge other) const {
-			return weight > other.weight;
-		}
 	};
 
 	Container::Vector<Container::Vector<edge>> graph;
