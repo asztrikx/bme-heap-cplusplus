@@ -24,8 +24,10 @@ int main() {
 	std::cout << std::endl;
 
 	//dijsktra
-	Dijkstra::Dijkstra d("graph.txt", 0);
-	d.printPath(5);
+	Dijkstra::Dijkstra dijkstra("graph.txt", 0);
+	for (int i = 0; i < dijkstra.length; i++) {
+		dijkstra.printPath(i);
+	}
 
 	return 0;
 }

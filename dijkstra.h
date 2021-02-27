@@ -14,16 +14,16 @@ enum Exception
 };
 
 class Dijkstra {
-	struct edge {
+	struct Edge {
 		int from;
 		int to;
 		int weight;
-		bool operator<(edge other) const {
+		bool operator<(Edge other) const {
 			return weight < other.weight;
 		}
 	};
 
-	Container::Vector<Container::Vector<edge>> graph;
+	Container::Vector<Container::Vector<Edge>> graph;
 
 	/// @brief Helper function for `printPath`
 	void printPathRec(int to) {
@@ -45,21 +45,20 @@ class Dijkstra {
 		}
 
 		//file read;
-		int n;
-		file >> n;
+		file >> length;
 
-		parents.resize(n, -1);
-		weights.resize(n, -1);
-		graph.resize(n, Container::Vector<edge>());
-		for (int i = 0; i < n; i++) {
-			int mi;
-			file >> mi;
-			for (int j = 0; j < mi; j++) {
-				edge e;
-				e.from = i;
-				file >> e.to;
-				file >> e.weight;
-				graph[i].pushBack(e);
+		parents.resize(length, -1);
+		weights.resize(length, -1);
+		graph.resize(length, Container::Vector<Edge>());
+		for (int i = 0; i < length; i++) {
+			int m;
+			file >> m;
+			for (int j = 0; j < m; j++) {
+				Edge edge;
+				edge.from = i;
+				file >> edge.to;
+				file >> edge.weight;
+				graph[i].pushBack(edge);
 			}
 		}
 		file.close();
@@ -67,10 +66,10 @@ class Dijkstra {
 
 	/// @brief Calculates all the shortest paths from `startIndex`
 	void solve() {
-		Heap::BinaryHeap<edge> priorityQueue;
-		priorityQueue.insert(edge{-1, 0, 0});
+		Heap::BinaryHeap<Edge> priorityQueue;
+		priorityQueue.insert(Edge{-1, 0, 0});
 		while (!priorityQueue.empty()) {
-			edge current = priorityQueue.pop();
+			Edge current = priorityQueue.pop();
 
 			if (weights[current.to] != -1) {
 				continue;
@@ -79,7 +78,7 @@ class Dijkstra {
 			parents[current.to] = current.from;
 
 			for (int i = 0; i < graph[current.to].length; i++) {
-				edge next = graph[current.to][i];
+				Edge next = graph[current.to][i];
 
 				if (weights[next.to] != -1) {
 					continue;
@@ -99,6 +98,9 @@ class Dijkstra {
 
 	/// Each node's weight in the route-tree from `startIndex` to i
 	Container::Vector<int> weights;
+
+	/// Number of nodes
+	int length;
 
 	/// Node's index from which the shortest paths are known
 	int startIndex;
@@ -122,6 +124,9 @@ class Dijkstra {
 	}
 
 	//ctor
+	/// @brief Reads then solves. First line should be the number of nodes.
+	/// each i-th line after that should first contain the number of edges from that node
+	/// and after that (edge's end, edge's weight) pairs all separated by whitespace.
 	Dijkstra(char const *filename, int startIndex) {
 		read(filename);
 		this->startIndex = startIndex;
