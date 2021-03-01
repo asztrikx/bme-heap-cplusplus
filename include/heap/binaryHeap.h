@@ -220,7 +220,7 @@ class BinaryHeap {
 		assert(heap.empty());
 
 		//+= vector test
-		Container::Vector values({3, 9, 7, 2, 2, 85, 36, 6});
+		Container::Vector values = {3, 9, 7, 2, 2, 85, 36, 6};
 		heap += values;
 		assert(heap.pop() == 2);
 		assert(heap.pop() == 2);
@@ -253,7 +253,7 @@ class BinaryHeap {
 		BinaryHeap<int> d = c;
 
 		//vector ctor test
-		BinaryHeap<int> e(Container::Vector({3, 1, 99, 1}));
+		BinaryHeap<int> e({3, 1, 99, 1});
 		assert(e.pop() == 1);
 		assert(e.pop() == 1);
 		assert(e.pop() == 3);

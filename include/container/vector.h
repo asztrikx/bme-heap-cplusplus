@@ -88,11 +88,19 @@ class Vector {
 		return result;
 	}
 
-	//operator
+	//operator=
 	Vector<T> &operator=(Vector<T> const &vector) {
 		copy(vector);
 		return *this;
 	}
+	Vector<T> &operator=(std::initializer_list<T> const &values) {
+		clear();
+		for (auto item = values.begin(); item != values.end(); item++) {
+			pushBack(*item);
+		}
+	}
+
+	//operator[]
 	T &operator[](int index) const {
 		if (index >= length) {
 			throw Container::ExceptionIndexOutofbounds;
@@ -172,11 +180,21 @@ class Vector {
 			assert(values[i] == i + 1);
 		}
 
-		//= misc test
-		values = Container::Vector({1, 2}) + 3 + 4 + Container::Vector({5}) + Container::Vector({6, 7, 8, 9, 10});
-		for (int i = 0; i < 10; i++) {
+		//= init list test
+		Vector e = {1, 2, 3, 5, 6};
+		for (int i = 0; i < 6; i++) {
 			assert(values[i] == i + 1);
 		}
+
+		//= misc test
+		values = Container::Vector({1, 2}) + 3 + 4 + Container::Vector({5}) + Container::Vector({6, 7, 8, 9, 10});
+		values += {11, 12, 13};
+		for (int i = 0; i < 13; i++) {
+			assert(values[i] == i + 1);
+		}
+
+		//[] const test
+		Vector const f = {1, 2, 3, 5, 8};
 	}
 };
 
