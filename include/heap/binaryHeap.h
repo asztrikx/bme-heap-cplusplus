@@ -174,10 +174,6 @@ class BinaryHeap {
 	}
 
 	//operator
-	BinaryHeap<T> &operator=(BinaryHeap<T> const &heap) {
-		data = heap.data;
-		return *this;
-	}
 	BinaryHeap<T> &operator+=(T const &value) {
 		insert(value);
 		return *this;
@@ -205,6 +201,13 @@ class BinaryHeap {
 		assert(heap.pop() == 36);
 		assert(heap.pop() == 85);
 		assert(heap.empty());
+
+		BinaryHeap<int> a;
+		BinaryHeap<int> b;
+		a = b;
+
+		BinaryHeap<int> c;
+		BinaryHeap<int> d = c;
 	}
 };
 
