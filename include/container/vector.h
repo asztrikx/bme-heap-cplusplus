@@ -98,8 +98,36 @@ class Vector {
 		}
 		return data[index];
 	}
-	void operator+=(T const &value) {
+
+	//operator+
+	Vector operator+(T const &value) const {
+		Vector<T> vector;
+		vector.copy(*this);
+		vector.pushBack(value);
+		return vector;
+	}
+	friend Vector operator+(T const &value, Vector<T> const &vector) {
+		return vector + value;
+	}
+	Vector operator+(Vector<T> const &vector) const {
+		Vector<T> vectorNew;
+		vectorNew.copy(*this);
+		for (int i = 0; i < vector.length; i++) {
+			vectorNew.pushBack(vector[i]);
+		}
+		return vectorNew;
+	}
+
+	//operator+=
+	Vector &operator+=(T const &value) {
 		pushBack(value);
+		return *this;
+	}
+	Vector &operator+=(Vector<T> const &vector) {
+		for (int i = 0; i < vector.length; i++) {
+			pushBack(vector[i]);
+		}
+		return *this;
 	}
 
 	//ctor, dtor

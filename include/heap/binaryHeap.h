@@ -173,7 +173,25 @@ class BinaryHeap {
 		}
 	}
 
-	//operator
+	//operator+
+	BinaryHeap<T> operator+(T const &value) {
+		BinaryHeap<T> binaryHeap;
+		binaryHeap.insert(value);
+		return binaryHeap;
+	}
+	friend BinaryHeap<T> operator+(T const &value, BinaryHeap<T> const &binaryHeap) {
+		return binaryHeap + value;
+	}
+	BinaryHeap<T> operator+(Container::Vector<T> const &values) {
+		BinaryHeap<T> binaryHeap;
+		binaryHeap.insert(values);
+		return binaryHeap;
+	}
+	friend BinaryHeap<T> operator+(Container::Vector<T> const &values, BinaryHeap<T> const &binaryHeap) {
+		return binaryHeap + values;
+	}
+
+	//operator+=
 	BinaryHeap<T> &operator+=(T const &value) {
 		insert(value);
 		return *this;
@@ -191,7 +209,7 @@ class BinaryHeap {
 		assert(heap.empty());
 
 		Container::Vector values({3, 9, 7, 2, 1, 85, 36, 6});
-		heap.insert(values);
+		heap += values;
 		assert(heap.pop() == 1);
 		assert(heap.pop() == 2);
 		assert(heap.pop() == 3);
@@ -200,6 +218,15 @@ class BinaryHeap {
 		assert(heap.pop() == 9);
 		assert(heap.pop() == 36);
 		assert(heap.pop() == 85);
+		assert(heap.empty());
+		heap += Container::Vector({5, 2, 1}) + 9 + Container::Vector({3, 6, 0});
+		assert(heap.pop() == 0);
+		assert(heap.pop() == 1);
+		assert(heap.pop() == 2);
+		assert(heap.pop() == 3);
+		assert(heap.pop() == 5);
+		assert(heap.pop() == 6);
+		assert(heap.pop() == 9);
 		assert(heap.empty());
 
 		BinaryHeap<int> a;
