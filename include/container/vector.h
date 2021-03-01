@@ -2,6 +2,7 @@
 #define VECTOR_H
 #include <initializer_list>
 #include "container.h"
+#include <cassert>
 
 namespace Container {
 
@@ -156,12 +157,26 @@ class Vector {
 
 	//unit test
 	static void test() {
+		//= test
 		Vector<T> a;
 		Vector<T> b;
 		b = a;
 
+		//copy ctor test
 		Vector<T> c;
 		Vector<T> d = c;
+
+		//init list ctor test
+		Container::Vector values({1, 2, 3, 4, 5, 6});
+		for (int i = 0; i < 6; i++) {
+			assert(values[i] == i + 1);
+		}
+
+		//= misc test
+		values = Container::Vector({1, 2}) + 3 + 4 + Container::Vector({5}) + Container::Vector({6, 7, 8, 9, 10});
+		for (int i = 0; i < 10; i++) {
+			assert(values[i] == i + 1);
+		}
 	}
 };
 
