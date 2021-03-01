@@ -192,9 +192,6 @@ class Vector {
 		for (int i = 0; i < 13; i++) {
 			assert(values[i] == i + 1);
 		}
-
-		//[] const test
-		Vector const f = {1, 2, 3, 5, 8};
 	}
 };
 
