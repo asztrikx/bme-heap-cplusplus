@@ -29,6 +29,15 @@ class Vector {
 		delete[] data;
 		data = dataNew;
 	}
+	void copy(Vector const &vector) {
+		delete[] data;
+		length = vector.length;
+		capacity = vector.capacity;
+		data = new T[vector.capacity];
+		for (int i = 0; i < vector.length; i++) {
+			data[i] = vector.data[i];
+		}
+	}
 
   public:
 	/// length is the number of used elements in `data`
@@ -80,13 +89,7 @@ class Vector {
 
 	//operator
 	Vector<T> &operator=(Vector<T> const &vector) {
-		delete[] data;
-		length = vector.length;
-		capacity = vector.capacity;
-		data = new T[vector.capacity];
-		for (int i = 0; i < vector.length; i++) {
-			data[i] = vector.data[i];
-		}
+		copy(vector);
 		return *this;
 	}
 	T &operator[](int index) const {
@@ -106,6 +109,10 @@ class Vector {
 	Vector(int size, T def) {
 		resize(size, def);
 	}
+	//copy ctor
+	Vector(Vector const &vector) {
+		copy(vector);
+	}
 	Vector(std::initializer_list<T> const &values) {
 		clear();
 		for (auto item = values.begin(); item != values.end(); item++) {
@@ -114,6 +121,16 @@ class Vector {
 	}
 	~Vector() {
 		delete[] data;
+	}
+
+	//unit test
+	static void test() {
+		Vector<T> a;
+		Vector<T> b;
+		b = a;
+
+		Vector<T> c;
+		Vector<T> d = c;
 	}
 };
 

@@ -6,6 +6,10 @@
 #include <assert.h>
 
 int main() {
+	//unit tests
+	Container::Vector<int>::test();
+	Heap::BinaryHeap<int>::test();
+
 	//heap sort
 	std::ifstream file("sort.txt", std::ifstream::in);
 	assert(file.good());
