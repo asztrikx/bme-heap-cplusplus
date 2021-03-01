@@ -173,6 +173,15 @@ class BinaryHeap {
 		}
 	}
 
+	//ctor
+	BinaryHeap() {
+	}
+	BinaryHeap(Container::Vector<T> const &vector) {
+		for (int i = 0; i < vector.length; i++) {
+			insert(vector[i]);
+		}
+	}
+
 	//operator+
 	BinaryHeap<T> operator+(T const &value) {
 		BinaryHeap<T> binaryHeap;
@@ -204,13 +213,16 @@ class BinaryHeap {
 	//unit test
 	static void test() {
 		BinaryHeap<int> heap;
+
+		//insert test
 		heap.insert(4);
 		assert(heap.pop() == 4);
 		assert(heap.empty());
 
-		Container::Vector values({3, 9, 7, 2, 1, 85, 36, 6});
+		//+= vector test
+		Container::Vector values({3, 9, 7, 2, 2, 85, 36, 6});
 		heap += values;
-		assert(heap.pop() == 1);
+		assert(heap.pop() == 2);
 		assert(heap.pop() == 2);
 		assert(heap.pop() == 3);
 		assert(heap.pop() == 6);
@@ -219,6 +231,8 @@ class BinaryHeap {
 		assert(heap.pop() == 36);
 		assert(heap.pop() == 85);
 		assert(heap.empty());
+
+		//+= misc test
 		heap += Container::Vector({5, 2, 1}) + 9 + Container::Vector({3, 6, 0});
 		assert(heap.pop() == 0);
 		assert(heap.pop() == 1);
@@ -229,12 +243,22 @@ class BinaryHeap {
 		assert(heap.pop() == 9);
 		assert(heap.empty());
 
+		//= test
 		BinaryHeap<int> a;
 		BinaryHeap<int> b;
 		a = b;
 
+		//copy ctor test
 		BinaryHeap<int> c;
 		BinaryHeap<int> d = c;
+
+		//vector ctor test
+		BinaryHeap<int> e(Container::Vector({3, 1, 99, 1}));
+		assert(e.pop() == 1);
+		assert(e.pop() == 1);
+		assert(e.pop() == 3);
+		assert(e.pop() == 99);
+		assert(e.empty());
 	}
 };
 
