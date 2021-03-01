@@ -137,18 +137,21 @@ class Vector {
 	Vector(int size, T def) {
 		resize(size, def);
 	}
+	~Vector() {
+		delete[] data;
+	}
+
 	//copy ctor
 	Vector(Vector const &vector) {
 		copy(vector);
 	}
+
+	//init list ctor
 	Vector(std::initializer_list<T> const &values) {
 		clear();
 		for (auto item = values.begin(); item != values.end(); item++) {
 			pushBack(*item);
 		}
-	}
-	~Vector() {
-		delete[] data;
 	}
 
 	//unit test
