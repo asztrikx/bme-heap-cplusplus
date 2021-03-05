@@ -3,11 +3,8 @@
 
 namespace Container {
 
-enum Exception
-{
-	ExceptionDataLoose,
-	ExceptionIndexOutofbounds,
-};
+class ExceptionIndexOutofbounds {};
+class ExceptionDataLoose {};
 
 } // namespace Container
 

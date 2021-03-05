@@ -34,7 +34,7 @@ class BinaryHeap {
 	T &parent(int index) const {
 		index = parentIndex(index);
 		if (index >= data.length) {
-			throw Heap::ExceptionIndexOutofbounds;
+			throw Heap::ExceptionIndexOutofbounds();
 		}
 		return data[index];
 	}
@@ -44,7 +44,7 @@ class BinaryHeap {
 	T &childLeft(int index) const {
 		index = childLeftIndex(index);
 		if (index >= data.length) {
-			throw Heap::ExceptionIndexOutofbounds;
+			throw Heap::ExceptionIndexOutofbounds();
 		}
 		return data[index];
 	}
@@ -54,7 +54,7 @@ class BinaryHeap {
 	T &childRight(int index) const {
 		index = childRightIndex(index);
 		if (index >= data.length) {
-			throw Heap::ExceptionIndexOutofbounds;
+			throw Heap::ExceptionIndexOutofbounds();
 		}
 		return data[index];
 	}
@@ -82,7 +82,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionIndexOutofbounds
 	T &minChild(int index) const {
 		if (minChildIndex(index) == -1) {
-			throw Heap::ExceptionIndexOutofbounds;
+			throw Heap::ExceptionIndexOutofbounds();
 		}
 		return data[minChildIndex(index)];
 	}
@@ -120,7 +120,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionEmpty
 	T top() const {
 		if (empty()) {
-			throw Heap::ExceptionEmpty;
+			throw Heap::ExceptionEmpty();
 		}
 		return data[0];
 	}
@@ -130,7 +130,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionEmpty
 	T pop() {
 		if (empty()) {
-			throw Heap::ExceptionEmpty;
+			throw Heap::ExceptionEmpty();
 		}
 
 		T result = data[0];

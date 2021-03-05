@@ -3,11 +3,8 @@
 
 namespace Heap {
 
-enum Exception
-{
-	ExceptionIndexOutofbounds,
-	ExceptionEmpty,
-};
+struct ExceptionIndexOutofbounds {};
+struct ExceptionEmpty {};
 
 } // namespace Heap
 
