@@ -188,16 +188,10 @@ class BinaryHeap {
 		binaryHeap.insert(value);
 		return binaryHeap;
 	}
-	friend BinaryHeap<T> operator+(T const &value, BinaryHeap<T> const &binaryHeap) {
-		return binaryHeap + value;
-	}
 	BinaryHeap<T> operator+(Container::Vector<T> const &values) {
 		BinaryHeap<T> binaryHeap;
 		binaryHeap.insert(values);
 		return binaryHeap;
-	}
-	friend BinaryHeap<T> operator+(Container::Vector<T> const &values, BinaryHeap<T> const &binaryHeap) {
-		return binaryHeap + values;
 	}
 
 	//operator+=
@@ -261,6 +255,15 @@ class BinaryHeap {
 		assert(e.empty());
 	}
 };
+
+template <typename T>
+BinaryHeap<T> operator+(T const &value, BinaryHeap<T> const &binaryHeap) {
+	return binaryHeap + value;
+}
+template <typename T>
+BinaryHeap<T> operator+(Container::Vector<T> const &values, BinaryHeap<T> const &binaryHeap) {
+	return binaryHeap + values;
+}
 
 } // namespace Heap
 

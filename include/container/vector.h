@@ -115,9 +115,6 @@ class Vector {
 		vector.pushBack(value);
 		return vector;
 	}
-	friend Vector operator+(T const &value, Vector<T> const &vector) {
-		return vector + value;
-	}
 	Vector operator+(Vector<T> const &vector) const {
 		Vector<T> vectorNew;
 		vectorNew.copy(*this);
@@ -194,6 +191,11 @@ class Vector {
 		}
 	}
 };
+
+template <typename T>
+Vector<T> operator+(T const &value, Vector<T> const &vector) {
+	return vector + value;
+}
 
 } // namespace Container
 
