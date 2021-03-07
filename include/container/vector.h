@@ -102,7 +102,7 @@ class Vector {
 
 	//operator[]
 	T &operator[](int index) const {
-		if (index >= length) {
+		if (index >= length || index < 0) {
 			throw Container::ExceptionIndexOutofbounds();
 		}
 		return data[index];
