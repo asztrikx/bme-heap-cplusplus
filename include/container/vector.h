@@ -20,7 +20,7 @@ class Vector {
 	/// @exception Container::ExceptionDataLoose capacityNew < length
 	void realloc(int capacityNew) {
 		if (capacityNew < length) {
-			throw Container::ExceptionDataLoose();
+			throw Exception::DataLoose();
 		}
 
 		capacity = capacityNew;
@@ -104,7 +104,7 @@ class Vector {
 	//operator[]
 	T &operator[](int index) const {
 		if (index >= length || index < 0) {
-			throw Container::ExceptionIndexOutofbounds();
+			throw Exception::IndexOutofbounds();
 		}
 		return data[index];
 	}

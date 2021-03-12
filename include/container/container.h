@@ -3,8 +3,11 @@
 
 namespace Container {
 
-class ExceptionIndexOutofbounds {};
-class ExceptionDataLoose {};
+namespace Exception {
+	class Exception {};
+	class IndexOutofbounds {};
+	class DataLoose {};
+} // namespace Exception
 
 } // namespace Container
 
