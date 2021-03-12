@@ -7,17 +7,19 @@
 
 namespace Dijkstra {
 
-enum Exception
-{
-	ExceptionFileNotexist,
-	ExceptionOutofbounds,
-};
+namespace Exception {
+	class Exception {};
+	class WeightsNotMonotonic : public Exception {};
+	class FileNotexist : public Exception {};
+	class Outofbounds : public Exception {};
+} // namespace Exception
 
+template <typename Weight>
 class Dijkstra {
 	struct Edge {
 		int from;
 		int to;
-		int weight;
+		Weight weight;
 		bool operator<(Edge other) const {
 			return weight < other.weight;
 		}
@@ -41,7 +43,7 @@ class Dijkstra {
 		//file open
 		std::ifstream file(filename, std::ifstream::in);
 		if (file.fail()) {
-			throw ExceptionFileNotexist;
+			throw Exception::FileNotexist();
 		}
 
 		//file read;
@@ -81,6 +83,9 @@ class Dijkstra {
 				Edge next = graph[current.to][i];
 
 				if (weights[next.to] != -1) {
+					if (current.weight + next.weight < weights[next.to]) {
+						throw Exception::WeightsNotMonotonic();
+					}
 					continue;
 				}
 				priorityQueue.insert({
@@ -97,7 +102,7 @@ class Dijkstra {
 	Container::Vector<int> parents;
 
 	/// Each node's weight in the route-tree from `startIndex` to i
-	Container::Vector<int> weights;
+	Container::Vector<Weight> weights;
 
 	/// Number of nodes
 	int length;
@@ -109,7 +114,7 @@ class Dijkstra {
 	/// @exception Dijkstra::ExceptionOutofbounds
 	void printPath(int to) {
 		if (to < 0 || to > parents.length) {
-			throw ExceptionOutofbounds;
+			throw Exception::Outofbounds();
 		}
 
 		std::cout << "(" << weights[to] << "): ";
