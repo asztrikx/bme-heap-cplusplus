@@ -1,0 +1,4 @@
+- specifikáció
+- memtrace is a must
+- heap as a super type of binheap
+	- remove sort, test from subtype

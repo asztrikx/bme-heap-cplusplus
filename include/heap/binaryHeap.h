@@ -9,7 +9,7 @@ namespace Heap {
 
 //default is min
 template <typename T>
-class BinaryHeap {
+class BinaryHeap : Heap<T> {
 	Container::Vector<T> data;
 
 	/// @brief Parent's index in data if exists
@@ -34,7 +34,7 @@ class BinaryHeap {
 	T &parent(int index) const {
 		index = parentIndex(index);
 		if (index >= data.length) {
-			throw Heap::ExceptionIndexOutofbounds();
+			throw Exception::IndexOutofbounds();
 		}
 		return data[index];
 	}
@@ -44,7 +44,7 @@ class BinaryHeap {
 	T &childLeft(int index) const {
 		index = childLeftIndex(index);
 		if (index >= data.length) {
-			throw Heap::ExceptionIndexOutofbounds();
+			throw Exception::IndexOutofbounds();
 		}
 		return data[index];
 	}
@@ -54,7 +54,7 @@ class BinaryHeap {
 	T &childRight(int index) const {
 		index = childRightIndex(index);
 		if (index >= data.length) {
-			throw Heap::ExceptionIndexOutofbounds();
+			throw Exception::IndexOutofbounds();
 		}
 		return data[index];
 	}
@@ -82,7 +82,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionIndexOutofbounds
 	T &minChild(int index) const {
 		if (minChildIndex(index) == -1) {
-			throw Heap::ExceptionIndexOutofbounds();
+			throw Exception::IndexOutofbounds();
 		}
 		return data[minChildIndex(index)];
 	}
@@ -120,7 +120,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionEmpty
 	T top() const {
 		if (empty()) {
-			throw Heap::ExceptionEmpty();
+			throw Exception::Empty();
 		}
 		return data[0];
 	}
@@ -130,7 +130,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionEmpty
 	T pop() {
 		if (empty()) {
-			throw Heap::ExceptionEmpty();
+			throw Exception::Empty();
 		}
 
 		T result = data[0];
@@ -163,7 +163,7 @@ class BinaryHeap {
 	/// @brief Sorts the given vector
 	/// @param vector vector to be sorted
 	static void Sort(Container::Vector<T> const &vector) {
-		Heap::BinaryHeap<T> heap;
+		BinaryHeap<T> heap;
 		for (int i = 0; i < vector.length; i++) {
 			heap += vector[i];
 		}
@@ -205,7 +205,7 @@ class BinaryHeap {
 	}
 
 	//unit test
-	static void test() {
+	static void Test() {
 		BinaryHeap<int> heap;
 
 		//insert test
