@@ -22,15 +22,23 @@ int main() {
 	file.close();
 
 	Heap::BinaryHeap<int>::Sort(vector);
-	for (int i = 0; i < vector.length; i++) {
-		std::cout << vector[i] << " ";
-	}
-	std::cout << std::endl;
+	std::cout << vector << std::endl;
 
 	//dijsktra
-	Dijkstra::Dijkstra dijkstra("graph.txt", 0);
+	Dijkstra::Dijkstra<int> dijkstra("graph.txt", 0);
 	for (int i = 0; i < dijkstra.length; i++) {
 		dijkstra.printPath(i);
+	}
+
+	try {
+		dijkstra = Dijkstra::Dijkstra<int>("graphMalformed.txt", 0);
+	} catch (const Dijkstra::Exception::Exception &e) {
+		std::cout << "file malformed" << std::endl;
+	}
+
+	Dijkstra::Dijkstra<float> dijkstraFloat("graphFloat.txt", 0);
+	for (int i = 0; i < dijkstraFloat.length; i++) {
+		dijkstraFloat.printPath(i);
 	}
 
 	return 0;
