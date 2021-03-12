@@ -162,7 +162,7 @@ class Vector {
 	}
 
 	//unit test
-	static void test() {
+	static void Test() {
 		//= test
 		Vector<T> a;
 		Vector<T> b;
@@ -173,7 +173,7 @@ class Vector {
 		Vector<T> d = c;
 
 		//init list ctor test
-		Container::Vector values({1, 2, 3, 4, 5, 6});
+		Vector values({1, 2, 3, 4, 5, 6});
 		for (int i = 0; i < 6; i++) {
 			assert(values[i] == i + 1);
 		}
@@ -185,7 +185,7 @@ class Vector {
 		}
 
 		//= misc test
-		values = Container::Vector({1, 2}) + 3 + 4 + Container::Vector({5}) + Container::Vector({6, 7, 8, 9, 10});
+		values = Vector({1, 2}) + 3 + 4 + Vector({5}) + Vector({6, 7, 8, 9, 10});
 		values += {11, 12, 13};
 		for (int i = 0; i < 13; i++) {
 			assert(values[i] == i + 1);
