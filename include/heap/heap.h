@@ -1,6 +1,5 @@
 #ifndef HEAP_H
 #define HEAP_H
-#include "binaryHeap.h"
 
 namespace Heap {
 
