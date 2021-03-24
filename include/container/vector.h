@@ -8,7 +8,7 @@
 namespace Container {
 
 template <typename T>
-class Vector : public Container<T> {
+class Vector {
 	/// Allocated memory's size
 	int capacity;
 

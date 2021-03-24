@@ -14,7 +14,7 @@ int main() {
 	std::ifstream file("sort.txt", std::ifstream::in);
 	assert(file.good());
 
-	Container::Container<int> vector = Container::Vector<int>();
+	Container::Vector<int> vector;
 	int v;
 	while (file >> v) {
 		vector += v;

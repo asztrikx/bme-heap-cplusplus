@@ -9,7 +9,7 @@ namespace Heap {
 
 //default is min
 template <typename T>
-class BinaryHeap : public Heap<T> {
+class BinaryHeap {
 	Container::Vector<T> data;
 
 	/// @brief Parent's index in data if exists
@@ -107,9 +107,9 @@ class BinaryHeap : public Heap<T> {
 		data[index] = value;
 	}
 
-	/// @brief Inserts Container::Container of values into heap
-	/// @param values Container::Container of values to be inserted
-	void insert(Container::Container<T> const &values) {
+	/// @brief Inserts Container::Vector of values into heap
+	/// @param values Container::Vector of values to be inserted
+	void insert(Container::Vector<T> const &values) {
 		for (int i = 0; i < values.length; i++) {
 			insert(values[i]);
 		}
@@ -162,7 +162,7 @@ class BinaryHeap : public Heap<T> {
 
 	/// @brief Sorts the given vector
 	/// @param vector vector to be sorted
-	static void Sort(Container::Container<T> const &vector) {
+	static void Sort(Container::Vector<T> const &vector) {
 		BinaryHeap<T> heap;
 		for (int i = 0; i < vector.length; i++) {
 			heap += vector[i];
@@ -176,7 +176,7 @@ class BinaryHeap : public Heap<T> {
 	//ctor
 	BinaryHeap() {
 	}
-	BinaryHeap(Container::Container<T> const &vector) {
+	BinaryHeap(Container::Vector<T> const &vector) {
 		for (int i = 0; i < vector.length; i++) {
 			insert(vector[i]);
 		}
@@ -188,7 +188,7 @@ class BinaryHeap : public Heap<T> {
 		binaryHeap.insert(value);
 		return binaryHeap;
 	}
-	BinaryHeap<T> operator+(Container::Container<T> const &values) {
+	BinaryHeap<T> operator+(Container::Vector<T> const &values) {
 		BinaryHeap<T> binaryHeap;
 		binaryHeap.insert(values);
 		return binaryHeap;
@@ -199,7 +199,7 @@ class BinaryHeap : public Heap<T> {
 		insert(value);
 		return *this;
 	}
-	BinaryHeap<T> &operator+=(Container::Container<T> const &values) {
+	BinaryHeap<T> &operator+=(Container::Vector<T> const &values) {
 		insert(values);
 		return *this;
 	}
@@ -261,7 +261,7 @@ BinaryHeap<T> operator+(T const &value, BinaryHeap<T> const &binaryHeap) {
 	return binaryHeap + value;
 }
 template <typename T>
-BinaryHeap<T> operator+(Container::Container<T> const &values, BinaryHeap<T> const &binaryHeap) {
+BinaryHeap<T> operator+(Container::Vector<T> const &values, BinaryHeap<T> const &binaryHeap) {
 	return binaryHeap + values;
 }
 
