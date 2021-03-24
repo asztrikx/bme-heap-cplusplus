@@ -79,7 +79,7 @@ class Dijkstra {
 			weights[current.to] = current.weight;
 			parents[current.to] = current.from;
 
-			for (int i = 0; i < graph[current.to].length; i++) {
+			for (int i = 0; i < graph[current.to].length(); i++) {
 				Edge next = graph[current.to][i];
 
 				if (weights[next.to] != -1) {
@@ -113,7 +113,7 @@ class Dijkstra {
 	/// @brief Prints path from `startIndex` to `to`
 	/// @exception Dijkstra::ExceptionOutofbounds
 	void printPath(int to) {
-		if (to < 0 || to > parents.length) {
+		if (to < 0 || to > parents.length()) {
 			throw Exception::Outofbounds();
 		}
 

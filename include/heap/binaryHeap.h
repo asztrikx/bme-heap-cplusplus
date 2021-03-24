@@ -33,7 +33,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionIndexOutofbounds
 	T &parent(int index) const {
 		index = parentIndex(index);
-		if (index >= data.length) {
+		if (index >= data.length()) {
 			throw Exception::IndexOutofbounds();
 		}
 		return data[index];
@@ -43,7 +43,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionIndexOutofbounds
 	T &childLeft(int index) const {
 		index = childLeftIndex(index);
-		if (index >= data.length) {
+		if (index >= data.length()) {
 			throw Exception::IndexOutofbounds();
 		}
 		return data[index];
@@ -53,7 +53,7 @@ class BinaryHeap {
 	/// @exception Heap::ExceptionIndexOutofbounds
 	T &childRight(int index) const {
 		index = childRightIndex(index);
-		if (index >= data.length) {
+		if (index >= data.length()) {
 			throw Exception::IndexOutofbounds();
 		}
 		return data[index];
@@ -63,13 +63,13 @@ class BinaryHeap {
 	/// @param index Node's index whose child we want
 	/// @return -1 if lead node
 	int minChildIndex(int index) const {
-		if (childLeftIndex(index) >= data.length && childRightIndex(index) >= data.length) {
+		if (childLeftIndex(index) >= data.length() && childRightIndex(index) >= data.length()) {
 			return -1;
 		}
-		if (childLeftIndex(index) >= data.length) {
+		if (childLeftIndex(index) >= data.length()) {
 			return childRightIndex(index);
 		}
-		if (childRightIndex(index) >= data.length) {
+		if (childRightIndex(index) >= data.length()) {
 			return childLeftIndex(index);
 		}
 		if (childLeft(index) < childRight(index)) {
@@ -89,17 +89,17 @@ class BinaryHeap {
 
   public:
 	/// @brief Clears heap
-	void clear() {
+	virtual void clear() {
 		data.clear();
 	}
 
 	/// @brief Inserts value into heap
 	/// @param value Value to be inserted
-	void insert(T const &value) {
+	virtual void insert(T const &value) {
 		data.pushBack(value);
 
 		//fix heap
-		int index = data.length - 1;
+		int index = data.length() - 1;
 		while (index != 0 && value < parent(index)) {
 			data[index] = parent(index);
 			index = parentIndex(index);
@@ -109,8 +109,8 @@ class BinaryHeap {
 
 	/// @brief Inserts Container::Vector of values into heap
 	/// @param values Container::Vector of values to be inserted
-	void insert(Container::Vector<T> const &values) {
-		for (int i = 0; i < values.length; i++) {
+	virtual void insert(Container::Vector<T> const &values) {
+		for (int i = 0; i < values.length(); i++) {
 			insert(values[i]);
 		}
 	}
@@ -118,7 +118,7 @@ class BinaryHeap {
 	/// @brief Peek the lowest element
 	/// @return Lowest element
 	/// @exception Heap::ExceptionEmpty
-	T top() const {
+	virtual T top() const {
 		if (empty()) {
 			throw Exception::Empty();
 		}
@@ -128,7 +128,7 @@ class BinaryHeap {
 	/// @brief Remove the lowest element
 	/// @return Lowest element
 	/// @exception Heap::ExceptionEmpty
-	T pop() {
+	virtual T pop() {
 		if (empty()) {
 			throw Exception::Empty();
 		}
@@ -138,7 +138,7 @@ class BinaryHeap {
 		//fix heap
 		T last = data.popBack();
 		//if it was the last item we can not move it back again
-		if (data.length != 0) {
+		if (data.length() != 0) {
 			int index = 0;
 			while (minChildIndex(index) != -1 && minChild(index) < last) {
 				data[index] = minChild(index);
@@ -151,24 +151,24 @@ class BinaryHeap {
 	}
 
 	/// @brief Is heap empty
-	bool empty() const {
-		return data.length == 0;
+	virtual bool empty() const {
+		return data.length() == 0;
 	}
 
 	/// @brief Number of element in heap
-	int length() const {
-		return data.length;
+	virtual int length() const {
+		return data.length();
 	}
 
 	/// @brief Sorts the given vector
 	/// @param vector vector to be sorted
 	static void Sort(Container::Vector<T> const &vector) {
 		BinaryHeap<T> heap;
-		for (int i = 0; i < vector.length; i++) {
+		for (int i = 0; i < vector.length(); i++) {
 			heap += vector[i];
 		}
 
-		for (int i = 0; i < vector.length; i++) {
+		for (int i = 0; i < vector.length(); i++) {
 			vector[i] = heap.pop();
 		}
 	}
@@ -177,29 +177,33 @@ class BinaryHeap {
 	BinaryHeap() {
 	}
 	BinaryHeap(Container::Vector<T> const &vector) {
-		for (int i = 0; i < vector.length; i++) {
+		for (int i = 0; i < vector.length(); i++) {
 			insert(vector[i]);
 		}
 	}
 
+	//dtor
+	virtual ~BinaryHeap() {
+	}
+
 	//operator+
-	BinaryHeap<T> operator+(T const &value) {
+	virtual BinaryHeap<T> operator+(T const &value) {
 		BinaryHeap<T> binaryHeap;
 		binaryHeap.insert(value);
 		return binaryHeap;
 	}
-	BinaryHeap<T> operator+(Container::Vector<T> const &values) {
+	virtual BinaryHeap<T> operator+(Container::Vector<T> const &values) {
 		BinaryHeap<T> binaryHeap;
 		binaryHeap.insert(values);
 		return binaryHeap;
 	}
 
 	//operator+=
-	BinaryHeap<T> &operator+=(T const &value) {
+	virtual BinaryHeap<T> &operator+=(T const &value) {
 		insert(value);
 		return *this;
 	}
-	BinaryHeap<T> &operator+=(Container::Vector<T> const &values) {
+	virtual BinaryHeap<T> &operator+=(Container::Vector<T> const &values) {
 		insert(values);
 		return *this;
 	}

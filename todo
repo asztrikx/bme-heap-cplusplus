@@ -1,9 +1,5 @@
 - specifikáció
 - memtrace is a must
-- heap as a super type of binheap
-	- replace occurances eg.:container.vector as paramter
-	- opertor as virtual
-	- http://www.cplusplus.com/forum/general/69866/
 - implicit const
 - virtual funs review
 - virtual dtor always
