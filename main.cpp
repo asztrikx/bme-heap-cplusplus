@@ -1,6 +1,6 @@
 #include "include/heap/binaryHeap.h"
 #include "include/container/vector.h"
-#include "dijkstra.h"
+#include "include/algorithm/dijkstra.h"
 #include <iostream>
 #include <fstream>
 #include <assert.h>
@@ -27,7 +27,7 @@ int main() {
 
 	//dijsktra
 	Dijkstra::Dijkstra<int> dijkstra("test/graph.txt", 0);
-	for (int i = 0; i < dijkstra.length; i++) {
+	for (int i = 0; i < dijkstra.length(); i++) {
 		dijkstra.printPath(i);
 	}
 
@@ -38,7 +38,7 @@ int main() {
 	}
 
 	Dijkstra::Dijkstra<float> dijkstraFloat("test/graphFloat.txt", 0);
-	for (int i = 0; i < dijkstraFloat.length; i++) {
+	for (int i = 0; i < dijkstraFloat.length(); i++) {
 		dijkstraFloat.printPath(i);
 	}
 

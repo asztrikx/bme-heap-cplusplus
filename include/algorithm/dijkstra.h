@@ -1,10 +1,10 @@
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
-#include "include/heap/binaryHeap.h"
-#include "include/container/vector.h"
+#include "../heap/binaryHeap.h"
+#include "../container/vector.h"
 #include <iostream>
 #include <fstream>
-#include "memtrace.h"
+#include "../../memtrace.h"
 
 namespace Dijkstra {
 
@@ -29,7 +29,7 @@ class Dijkstra {
 	Container::Vector<Container::Vector<Edge>> graph;
 
 	/// @brief Helper function for `printPath`
-	void printPathRec(int to) {
+	virtual void printPathRec(int to) {
 		if (to == startIndex) {
 			std::cout << startIndex;
 			return;
@@ -40,7 +40,7 @@ class Dijkstra {
 
 	/// @brief Read file into `graph`
 	/// @exception Dijkstra::ExceptionFileNotexist
-	void read(char const *filename) {
+	virtual void read(char const *filename) {
 		//file open
 		std::ifstream file(filename, std::ifstream::in);
 		if (file.fail()) {
@@ -48,12 +48,12 @@ class Dijkstra {
 		}
 
 		//file read;
-		file >> length;
+		file >> _length;
 
-		parents.resize(length, -1);
-		weights.resize(length, -1);
-		graph.resize(length, Container::Vector<Edge>());
-		for (int i = 0; i < length; i++) {
+		parents.resize(_length, -1);
+		weights.resize(_length, -1);
+		graph.resize(_length, Container::Vector<Edge>());
+		for (int i = 0; i < _length; i++) {
 			int m;
 			file >> m;
 			for (int j = 0; j < m; j++) {
@@ -98,22 +98,27 @@ class Dijkstra {
 		}
 	}
 
+	/// Number of nodes
+	int _length;
+
+	/// Node's index from which the shortest paths are known
+	int startIndex;
+
   public:
+	/// @brief Number of nodes
+	int length() const {
+		return _length;
+	}
+
 	/// Each node's parent index in the route-tree from `startIndex` to i
 	Container::Vector<int> parents;
 
 	/// Each node's weight in the route-tree from `startIndex` to i
 	Container::Vector<Weight> weights;
 
-	/// Number of nodes
-	int length;
-
-	/// Node's index from which the shortest paths are known
-	int startIndex;
-
 	/// @brief Prints path from `startIndex` to `to`
 	/// @exception Dijkstra::ExceptionOutofbounds
-	void printPath(int to) {
+	virtual void printPath(int to) {
 		if (to < 0 || to > parents.length()) {
 			throw Exception::Outofbounds();
 		}
