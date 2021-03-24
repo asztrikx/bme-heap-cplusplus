@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <assert.h>
+#include "memtrace.h"
 
 int main() {
 	//unit tests

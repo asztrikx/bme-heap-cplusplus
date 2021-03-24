@@ -4,6 +4,7 @@
 #include <initializer_list>
 #include <cassert>
 #include <iostream>
+#include "../../memtrace.h"
 
 namespace Container {
 
@@ -21,7 +22,7 @@ class Vector {
 	/// @brief Changes `data`-s *allocated* size
 	/// @param capacityNew `data`'s new *allocated* size
 	/// @exception Container::ExceptionDataLoose capacityNew < length
-	void realloc(int capacityNew) {
+	void reallocate(int capacityNew) {
 		if (capacityNew < _length) {
 			throw Exception::DataLoose();
 		}
@@ -73,7 +74,7 @@ class Vector {
 	/// @param value value to be inserted
 	virtual void pushBack(T const &value) {
 		if (capacity == _length) {
-			realloc(2 * capacity);
+			reallocate(2 * capacity);
 		}
 
 		_length++;
@@ -89,7 +90,7 @@ class Vector {
 		_length--;
 
 		if (capacity == 4 * _length) {
-			realloc(capacity / 2);
+			reallocate(capacity / 2);
 		}
 		return result;
 	}

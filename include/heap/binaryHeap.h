@@ -5,6 +5,8 @@
 #include <assert.h>
 #include "heap.h"
 
+#include "../../memtrace.h"
+
 namespace Heap {
 
 //default is min

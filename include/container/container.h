@@ -1,6 +1,8 @@
 #ifndef CONTAINER_H
 #define CONTAINER_H
 
+#include "../../memtrace.h"
+
 namespace Container {
 
 namespace Exception {

@@ -4,6 +4,7 @@
 #include "include/container/vector.h"
 #include <iostream>
 #include <fstream>
+#include "memtrace.h"
 
 namespace Dijkstra {
 
