@@ -1,4 +1,16 @@
 - specifikáció
 - memtrace is a must
 - heap as a super type of binheap
-	- remove sort, test from subtype
+	- replace occurances eg.:container.vector as paramter
+	- opertor as virtual
+	- http://www.cplusplus.com/forum/general/69866/
+- implicit const
+- virtual funs review
+- virtual dtor always
+- partially abstract functions
+- protected vars
+- init list review
+- hetero.Super::fun();
+- super::fun();
+- virtual dtor is special
+	- it is always called

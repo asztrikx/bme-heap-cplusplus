@@ -7,14 +7,14 @@
 
 int main() {
 	//unit tests
-	Container::Vector<int>::test();
+	Container::Vector<int>::Test();
 	Heap::BinaryHeap<int>::Test();
 
 	//heap sort
 	std::ifstream file("sort.txt", std::ifstream::in);
 	assert(file.good());
 
-	Container::Vector<int> vector;
+	Container::Container<int> vector = Container::Vector<int>();
 	int v;
 	while (file >> v) {
 		vector += v;

@@ -8,7 +8,7 @@
 namespace Container {
 
 template <typename T>
-class Vector {
+class Vector : public Container<T> {
 	/// Allocated memory's size
 	int capacity;
 
@@ -31,7 +31,7 @@ class Vector {
 		delete[] data;
 		data = dataNew;
 	}
-	void copy(Vector const &vector) {
+	void copy(Vector<T> const &vector) {
 		delete[] data;
 		length = vector.length;
 		capacity = vector.capacity;
@@ -110,13 +110,13 @@ class Vector {
 	}
 
 	//operator+
-	Vector operator+(T const &value) const {
+	Vector<T> operator+(T const &value) const {
 		Vector<T> vector;
 		vector.copy(*this);
 		vector.pushBack(value);
 		return vector;
 	}
-	Vector operator+(Vector<T> const &vector) const {
+	Vector<T> operator+(Vector<T> const &vector) const {
 		Vector<T> vectorNew;
 		vectorNew.copy(*this);
 		for (int i = 0; i < vector.length; i++) {
@@ -126,11 +126,11 @@ class Vector {
 	}
 
 	//operator+=
-	Vector &operator+=(T const &value) {
+	Vector<T> &operator+=(T const &value) {
 		pushBack(value);
 		return *this;
 	}
-	Vector &operator+=(Vector<T> const &vector) {
+	Vector<T> &operator+=(Vector<T> const &vector) {
 		for (int i = 0; i < vector.length; i++) {
 			pushBack(vector[i]);
 		}
@@ -149,7 +149,7 @@ class Vector {
 	}
 
 	//copy ctor
-	Vector(Vector const &vector) {
+	Vector(Vector<T> const &vector) {
 		copy(vector);
 	}
 
@@ -173,13 +173,13 @@ class Vector {
 		Vector<T> d = c;
 
 		//init list ctor test
-		Vector values({1, 2, 3, 4, 5, 6});
+		Vector<int> values({1, 2, 3, 4, 5, 6});
 		for (int i = 0; i < 6; i++) {
 			assert(values[i] == i + 1);
 		}
 
 		//= init list test
-		Vector e = {1, 2, 3, 5, 6};
+		Vector<int> e = {1, 2, 3, 5, 6};
 		for (int i = 0; i < 6; i++) {
 			assert(values[i] == i + 1);
 		}
