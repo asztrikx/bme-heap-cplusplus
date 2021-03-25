@@ -265,13 +265,9 @@ class BinaryHeap {
 };
 
 template <typename T>
-BinaryHeap<T> operator+(T const &value, BinaryHeap<T> const &binaryHeap) {
-	return binaryHeap + value;
-}
+BinaryHeap<T> operator+(T const &value, BinaryHeap<T> const &binaryHeap);
 template <typename T>
-BinaryHeap<T> operator+(Container::Vector<T> const &values, BinaryHeap<T> const &binaryHeap) {
-	return binaryHeap + values;
-}
+BinaryHeap<T> operator+(Container::Vector<T> const &values, BinaryHeap<T> const &binaryHeap);
 
 } // namespace Heap
 
