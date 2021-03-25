@@ -142,3 +142,197 @@ Szintén kell egy a Dijkstrát kipróbáló rész, ahol az egyik esetben beolvas
   ![graphMalformed](graphMalformed.png)
 
 # Dokumentáció
+
+## Vector
+
+```c++
+/// Allocated memory's size
+int capacity;
+
+/// _length is the number of used elements in `data`
+int _length;
+
+/// T[capacity]
+T *data = nullptr;
+
+/// @brief Changes `data`-s _allocated_ size
+/// @param capacityNew `data`'s new _allocated_ size
+/// @exception Container::ExceptionDataLoose capacityNew < length
+void reallocate(int capacityNew);
+
+/// @brief Deep copies `vector`
+/// @param vector vector to be copied
+void copy(Vector<T> const &vector);
+
+/// @brief Returns the number of stored data
+virtual int length() const;
+
+/// @brief Clears then fills with `value`
+/// @param size number of elements to insert
+/// @param value value to be inserted
+virtual void resize(int size, T const &value);
+
+/// @brief Deletes data, then recreates it with `capacity` = 1
+virtual void clear();
+
+/// @brief data[length] = value. Capacity is doubled if full
+/// @param size number of elements to insert
+/// @param value value to be inserted
+virtual void pushBack(T const &value);
+
+/// @brief Marks last element as garbage. Decreases capacity if needed
+/// @param size number of elements to insert
+/// @param value value to be inserted
+/// @return last element
+virtual T popBack();
+
+//operator=
+virtual Vector<T> &operator=(Vector<T> const &vector);
+virtual Vector<T> &operator=(std::initializer_list<T> const &values);
+
+//operator[]
+virtual T &operator[](int index) const;
+
+//operator+
+virtual Vector<T> operator+(T const &value) const;
+virtual Vector<T> operator+(Vector<T> const &vector) const;
+
+//operator+=
+virtual Vector<T> &operator+=(T const &value);
+virtual Vector<T> &operator+=(Vector<T> const &vector);
+
+//ctor, dtor
+Vector();
+Vector(int size, T def);
+virtual ~Vector();
+
+//copy ctor
+Vector(Vector<T> const &vector);
+
+//init list ctor
+Vector(std::initializer_list<T> const &values);
+
+//unit test
+static void Test();
+```
+
+## BinaryHeap
+
+```c++
+/// @brief Parent's index in data if exists
+/// @param index Node's index whose parent we want
+int parentIndex(int index) const;
+/// @brief Left child's index in data if exists
+/// @param index Node's index whose child we want
+int childLeftIndex(int index) const;
+/// @brief Right child's index in data if exists
+/// @param index Node's index whose child we want
+int childRightIndex(int index) const;
+
+/// @brief Parent's value in data
+/// @param index Node's index whose parent we want
+/// @exception Heap::ExceptionIndexOutofbounds
+T &parent(int index) const;
+/// @brief Left child's value in data
+/// @param index Node's index whose child we want
+/// @exception Heap::ExceptionIndexOutofbounds
+T &childLeft(int index) const;
+/// @brief Right child's value in data
+/// @param index Node's index whose child we want
+/// @exception Heap::ExceptionIndexOutofbounds
+T &childRight(int index) const;
+
+/// @brief Child's index with lesser value
+/// @param index Node's index whose child we want
+/// @return -1 if lead node
+int minChildIndex(int index) const;
+/// @brief Child with lesser value
+/// @param index Node's index whose child we want
+/// @exception Heap::ExceptionIndexOutofbounds
+T &minChild(int index) const;
+
+/// @brief Clears heap
+virtual void clear();
+
+/// @brief Inserts value into heap
+/// @param value Value to be inserted
+virtual void insert(T const &value);
+
+/// @brief Inserts Container::Vector of values into heap
+/// @param values Container::Vector of values to be inserted
+virtual void insert(Container::Vector<T> const &values);
+
+/// @brief Peek the lowest element
+/// @return Lowest element
+/// @exception Heap::ExceptionEmpty
+virtual T top() const;
+
+/// @brief Remove the lowest element
+/// @return Lowest element
+/// @exception Heap::ExceptionEmpty
+virtual T pop();
+
+/// @brief Is heap empty
+virtual bool empty() const;
+
+/// @brief Number of element in heap
+virtual int length() const;
+
+/// @brief Sorts the given vector
+/// @param vector vector to be sorted
+static void Sort(Container::Vector<T> const &vector);
+
+//ctor
+BinaryHeap();
+BinaryHeap(Container::Vector<T> const &vector);
+
+//dtor
+virtual ~BinaryHeap();
+
+//operator+
+virtual BinaryHeap<T> operator+(T const &value);
+virtual BinaryHeap<T> operator+(Container::Vector<T> const &values);
+
+//operator+=
+virtual BinaryHeap<T> &operator+=(T const &value);
+virtual BinaryHeap<T> &operator+=(Container::Vector<T> const &values);
+
+//unit test
+static void Test();
+```
+
+## Dijkstra
+
+```c++
+/// @brief Helper function for `printPath`
+virtual void printPathRec(int to);
+
+/// @brief Read file into `graph`
+/// @exception Dijkstra::ExceptionFileNotexist
+virtual void read(char const *filename);
+
+/// @brief Calculates all the shortest paths from `startIndex`
+void solve();
+
+/// Node's index from which the shortest paths are known
+int startIndex;
+
+/// @brief Number of nodes
+int length() const;
+
+/// Each node's parent index in the route-tree from `startIndex` to i
+Container::Vector<int> parents;
+
+/// Each node's weight in the route-tree from `startIndex` to i
+Container::Vector<Weight> weights;
+
+/// @brief Prints path from `startIndex` to `to`
+/// @exception Dijkstra::ExceptionOutofbounds
+virtual void printPath(int to);
+
+//ctor
+/// @brief Reads then solves. First line should be the number of nodes.
+/// each i-th line after that should first contain the number of edges from that node
+/// and after that (edge's end, edge's weight) pairs all separated by whitespace.
+Dijkstra(char const *filename, int startIndex);
+```
