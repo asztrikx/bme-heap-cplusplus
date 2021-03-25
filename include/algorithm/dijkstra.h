@@ -48,12 +48,13 @@ class Dijkstra {
 		}
 
 		//file read;
-		file >> _length;
+		int length;
+		file >> length;
 
-		parents.resize(_length, -1);
-		weights.resize(_length, -1);
-		graph.resize(_length, Container::Vector<Edge>());
-		for (int i = 0; i < _length; i++) {
+		graph.resize(length, Container::Vector<Edge>());
+		parents.resize(length, -1);
+		weights.resize(length, -1);
+		for (int i = 0; i < length; i++) {
 			int m;
 			file >> m;
 			for (int j = 0; j < m; j++) {
@@ -98,16 +99,13 @@ class Dijkstra {
 		}
 	}
 
-	/// Number of nodes
-	int _length;
-
 	/// Node's index from which the shortest paths are known
 	int startIndex;
 
   public:
 	/// @brief Number of nodes
 	int length() const {
-		return _length;
+		return graph.length();
 	}
 
 	/// Each node's parent index in the route-tree from `startIndex` to i
