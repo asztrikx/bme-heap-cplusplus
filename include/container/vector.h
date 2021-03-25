@@ -10,6 +10,7 @@ namespace Container {
 
 template <typename T>
 class Vector {
+  protected:
 	/// Allocated memory's size
 	int capacity;
 
@@ -19,6 +20,7 @@ class Vector {
 	/// T[capacity]
 	T *data = nullptr;
 
+  private:
 	/// @brief Changes `data`-s *allocated* size
 	/// @param capacityNew `data`'s new *allocated* size
 	/// @exception Container::ExceptionDataLoose capacityNew < length

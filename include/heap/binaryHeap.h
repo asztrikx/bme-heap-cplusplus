@@ -12,8 +12,10 @@ namespace Heap {
 //default is min
 template <typename T>
 class BinaryHeap {
+  protected:
 	Container::Vector<T> data;
 
+  private:
 	/// @brief Parent's index in data if exists
 	/// @param index Node's index whose parent we want
 	int parentIndex(int index) const {
