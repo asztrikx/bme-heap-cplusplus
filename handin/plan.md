@@ -1,68 +1,23 @@
 # Generikus vector és kupac, alkalmazva rendezésre és dijkstra algoritmusra
 
-Szerkezetek rendelkeznek virtuális függvényekkel a származtatás érdekében. Ezeket `V`-vel jelölöm.
+## Alapvető célok
 
-Vector<T>
+A feladat egyik célja, hogy generikus vectort valósítjunk meg, azaz egy olyan adatszerkezetet, ami változó méretű adatot képes indexeléssel tárolni.
 
-- `int` length() `V`
-- resize(size, defaultValue) `V`
-- clear() `V`
-- pushBack(T) `V`
-- `T` popBack() `V`
-- operator=(Vector<T>) `V`
-- operator=({}) `V`
-- operator[] `V`
-- operator+(T) `V`
-- operator+(Vector<T>) `V`
-- operator+=(T) `V`
-- operator+=(Vector<T>) `V`
-- Vector()
-- Vector(size, defaultValue)
-- Vector(Vector<T>)
-- Vector({})
-- `static` Test()
-- kívül
-  - operator+(T, Vector<T>)
-  - operator<<
-    - formátum: "[méret](1.elem, 2.elem, ...)"
+Másik cél egy bináris heap készítése, ami az előbbi adatszerkezetre építve valósítja meg működését. Feladata, hogy mindig a benne lévő legkisebb prioritású elemet tudja biztosítani hatékonyan. (Ezt a prioritást az adott adattípus < operátora határozza meg.)
 
-BinaryHeap<T>
+Az adatstruktúrák megvalósítása operátorokban gazdag kell legyen, hiszen alapvető, gyakran használt struktúrákról beszélünk.
 
-- clear() `V`
-- insert(T) `V`
-- insert(Vector<T>) `V`
-- T top() `V`
-- T pop() `V`
-- bool empty() `V`
-- int length() `V`
-- BinaryHeap()
-- BinaryHeap(Vector<T>)
-- operator+(T) `V`
-- operator+(Vector<T>) `V`
-- opartor+=(T) `V`
-- opartor+=(Vector<T>) `V`
-- static Sort(Vector<T>)
-- static Test()
-- kívül
-  - operator(T, BinaryHeap<T>)
-  - operator(Vector<T>, BinaryHeap<T>)
+## Felhasználás
 
-Dijkstra<Weight>
+Ezek felhasználásának bemutatására két, egyben generikus és konkrét példát tervezek megvalósítani:
 
-- int length()
-- Vector<int> parents
-- Vector<Weight> weights
-- printPath(int to) `V`
-- Dijkstra(filename, startIndex)
+1. Egy hatékony rendező algoritmus
+1. Dijkstra algoritmus
 
-Dijkstra esetében a rejtett `read(filename)` és `printPathRec(int to)` is virtuális a bővíthetőség érdekében.
+Mindkettő egyszerre igényli a két adatszerkezetet, így egy jó példa lehet, az adatszerkezet fontosságára, hatékonyságára és tesztelésére.
 
-Az egyes adatszerkezetek ha tartalmaznak `static Test()`-et, akkor annak célja, hogy változatos eseteket, funkcionalitásokat kipróbáljanak és assert-tel leteszteljék azokat.
-
-Ezekhez a szerkezetekhez Exception is tartozik, melyeket az őket tartalmazó namespacebe helyezek (kivétel Dijkstra...), hogy más megegyező funkcionalitású adatszerkezetek is felhasználhassák ezeket.
-
-Feladat szintén egy pl egész számokat tartalmazó fájlt vektorba beolvasni, majd BinaryHeap-pel sortolva kiírni a beépített `operator<<`-ral.
-Szintén kell egy a Dijkstrát kipróbáló rész, ahol az egyik esetben beolvassa a fájlt (két különböző súlytípusú példa kell), majd kiírja a legrövidebb utakat az összes csúcsba, míg másik esetben detektálja, hogy nem alkalmazható az algoritmus.
+Dijksta algoritmus esetében szintén fontos, hogy későbbi fejlesztésben felül lehessen definiálni a beolvasást, hogy támogasson más formátumokat.
 
 # UML
 
