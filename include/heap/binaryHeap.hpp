@@ -1,7 +1,7 @@
 #ifndef BINARYHEAP_H
 #define BINARYHEAP_H
 #include <algorithm>
-#include "../container/vector.h"
+#include "../container/vector.hpp"
 #include <assert.h>
 
 #include "../../memtrace.h"

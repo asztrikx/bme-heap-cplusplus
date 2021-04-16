@@ -1,7 +1,7 @@
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
-#include "../heap/binaryHeap.h"
-#include "../container/vector.h"
+#include "../heap/binaryHeap.hpp"
+#include "../container/vector.hpp"
 #include <iostream>
 #include <fstream>
 #include "../../memtrace.h"
