@@ -26,20 +26,28 @@ int main() {
 	std::cout << vector << std::endl;
 
 	//dijsktra
-	Dijkstra::Dijkstra<int> dijkstra("test/graph.txt", 0);
-	for (int i = 0; i < dijkstra.length(); i++) {
-		dijkstra.printPath(i);
+	try {
+		Dijkstra::Dijkstra<int> dijkstra("test/graph.txt", 0);
+		for (int i = 0; i < dijkstra.length(); i++) {
+			dijkstra.printPath(i);
+		}
+	} catch (std::exception const &e) {
+		std::cout << "error: " << e.what() << std::endl;
 	}
 
 	try {
-		dijkstra = Dijkstra::Dijkstra<int>("test/graphMalformed.txt", 0);
-	} catch (const Dijkstra::Exception::Exception &e) {
-		std::cout << "file malformed" << std::endl;
+		Dijkstra::Dijkstra<int> dijkstra = Dijkstra::Dijkstra<int>("test/graphMalformed.txt", 0);
+		std::cout << "error not caught" << std::endl;
+	} catch (std::exception const &) {
 	}
 
-	Dijkstra::Dijkstra<float> dijkstraFloat("test/graphFloat.txt", 0);
-	for (int i = 0; i < dijkstraFloat.length(); i++) {
-		dijkstraFloat.printPath(i);
+	try {
+		Dijkstra::Dijkstra<float> dijkstra("test/graphFloat.txt", 0);
+		for (int i = 0; i < dijkstra.length(); i++) {
+			dijkstra.printPath(i);
+		}
+	} catch (std::exception const &e) {
+		std::cout << "error: " << e.what() << std::endl;
 	}
 
 	return 0;
