@@ -115,13 +115,6 @@ class Dijkstra {
 	/// @brief Prints path from `startIndex` to `to`
 	/// @exception std::out_of_range
 	virtual void printPath(int to) {
-		if (to < 0) {
-			throw std::out_of_range("[under]");
-		}
-		if (to > parents.length()) {
-			throw std::out_of_range("[over]");
-		}
-
 		std::cout << "(" << weights[to] << "): ";
 
 		if (weights[to] == -1) {
