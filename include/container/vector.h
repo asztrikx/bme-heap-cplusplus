@@ -1,6 +1,5 @@
 #ifndef VECTOR_H
 #define VECTOR_H
-#include "container.h"
 #include <initializer_list>
 #include <cassert>
 #include <iostream>
@@ -26,7 +25,7 @@ class Vector {
 	/// @exception std::bad_alloc if capacityNew < length
 	void reallocate(int capacityNew) {
 		if (capacityNew < _length) {
-			throw std::bad_alloc("losing data");
+			throw std::bad_alloc();
 		}
 
 		capacity = capacityNew;

@@ -3,7 +3,6 @@
 #include <algorithm>
 #include "../container/vector.h"
 #include <assert.h>
-#include "heap.h"
 
 #include "../../memtrace.h"
 
@@ -35,7 +34,7 @@ class BinaryHeap {
 	/// @brief Parent's value
 	/// @param index Parent's data
 	/// @exception std::out_of_range
-	T &parent(int index) const {
+	T const &parent(int index) const {
 		index = parentIndex(index);
 		if (index >= data.length()) {
 			throw std::out_of_range("[over]");
@@ -45,7 +44,7 @@ class BinaryHeap {
 	/// @brief Left child's value
 	/// @param index Left child's data
 	/// @exception std::out_of_range
-	T &childLeft(int index) const {
+	T const &childLeft(int index) const {
 		index = childLeftIndex(index);
 		if (index >= data.length()) {
 			throw std::out_of_range("[over]");
@@ -55,7 +54,7 @@ class BinaryHeap {
 	/// @brief Right child's value
 	/// @param index Right child node's data
 	/// @exception std::out_of_range
-	T &childRight(int index) const {
+	T const &childRight(int index) const {
 		index = childRightIndex(index);
 		if (index >= data.length()) {
 			throw std::out_of_range("[over]");
@@ -84,7 +83,7 @@ class BinaryHeap {
 	/// @brief Child with lesser value
 	/// @param index Node's index whose child we want
 	/// @exception std::out_of_range
-	T &minChild(int index) const {
+	T const &minChild(int index) const {
 		if (minChildIndex(index) == -1) {
 			throw std::out_of_range("[under]");
 		}
@@ -166,7 +165,7 @@ class BinaryHeap {
 
 	/// @brief Sorts the given vector
 	/// @param vector vector to be sorted
-	static void Sort(Container::Vector<T> const &vector) {
+	static void Sort(Container::Vector<T> &vector) {
 		BinaryHeap<T> heap;
 		for (int i = 0; i < vector.length(); i++) {
 			heap += vector[i];
