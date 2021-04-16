@@ -16,49 +16,49 @@ class BinaryHeap {
 	Container::Vector<T> data;
 
   private:
-	/// @brief Parent's index in data if exists
-	/// @param index Node's index whose parent we want
+	/// @brief Parent's index if exists
+	/// @param index Parent's index
 	int parentIndex(int index) const {
 		return (index - 1) / 2;
 	}
-	/// @brief Left child's index in data if exists
-	/// @param index Node's index whose child we want
+	/// @brief Left child's index if exists
+	/// @param index Left child's index
 	int childLeftIndex(int index) const {
 		return 2 * index + 1;
 	}
-	/// @brief Right child's index in data if exists
-	/// @param index Node's index whose child we want
+	/// @brief Right child's index if exists
+	/// @param index Right child's index
 	int childRightIndex(int index) const {
 		return 2 * index + 2;
 	}
 
-	/// @brief Parent's value in data
-	/// @param index Node's index whose parent we want
-	/// @exception Heap::ExceptionIndexOutofbounds
+	/// @brief Parent's value
+	/// @param index Parent's data
+	/// @exception std::out_of_range
 	T &parent(int index) const {
 		index = parentIndex(index);
 		if (index >= data.length()) {
-			throw Exception::IndexOutofbounds();
+			throw std::out_of_range("[over]");
 		}
 		return data[index];
 	}
-	/// @brief Left child's value in data
-	/// @param index Node's index whose child we want
-	/// @exception Heap::ExceptionIndexOutofbounds
+	/// @brief Left child's value
+	/// @param index Left child's data
+	/// @exception std::out_of_range
 	T &childLeft(int index) const {
 		index = childLeftIndex(index);
 		if (index >= data.length()) {
-			throw Exception::IndexOutofbounds();
+			throw std::out_of_range("[over]");
 		}
 		return data[index];
 	}
-	/// @brief Right child's value in data
-	/// @param index Node's index whose child we want
-	/// @exception Heap::ExceptionIndexOutofbounds
+	/// @brief Right child's value
+	/// @param index Right child node's data
+	/// @exception std::out_of_range
 	T &childRight(int index) const {
 		index = childRightIndex(index);
 		if (index >= data.length()) {
-			throw Exception::IndexOutofbounds();
+			throw std::out_of_range("[over]");
 		}
 		return data[index];
 	}
@@ -83,10 +83,10 @@ class BinaryHeap {
 	}
 	/// @brief Child with lesser value
 	/// @param index Node's index whose child we want
-	/// @exception Heap::ExceptionIndexOutofbounds
+	/// @exception std::out_of_range
 	T &minChild(int index) const {
 		if (minChildIndex(index) == -1) {
-			throw Exception::IndexOutofbounds();
+			throw std::out_of_range("[under]");
 		}
 		return data[minChildIndex(index)];
 	}
@@ -121,20 +121,20 @@ class BinaryHeap {
 
 	/// @brief Peek the lowest element
 	/// @return Lowest element
-	/// @exception Heap::ExceptionEmpty
+	/// @exception std::out_of_range if empty
 	virtual T top() const {
 		if (empty()) {
-			throw Exception::Empty();
+			throw std::out_of_range("empty");
 		}
 		return data[0];
 	}
 
 	/// @brief Remove the lowest element
 	/// @return Lowest element
-	/// @exception Heap::ExceptionEmpty
+	/// @exception std::out_of_range if empty
 	virtual T pop() {
 		if (empty()) {
-			throw Exception::Empty();
+			throw std::out_of_range("empty");
 		}
 
 		T result = data[0];
@@ -224,25 +224,33 @@ class BinaryHeap {
 		//+= vector test
 		Container::Vector<int> values = {3, 9, 7, 2, 2, 85, 36, 6};
 		heap += values;
-		assert(heap.pop() == 2);
-		assert(heap.pop() == 2);
-		assert(heap.pop() == 3);
-		assert(heap.pop() == 6);
-		assert(heap.pop() == 7);
-		assert(heap.pop() == 9);
-		assert(heap.pop() == 36);
-		assert(heap.pop() == 85);
+		try {
+			assert(heap.pop() == 2);
+			assert(heap.pop() == 2);
+			assert(heap.pop() == 3);
+			assert(heap.pop() == 6);
+			assert(heap.pop() == 7);
+			assert(heap.pop() == 9);
+			assert(heap.pop() == 36);
+			assert(heap.pop() == 85);
+		} catch (std::exception const &e) {
+			std::cout << "Error: " << e.what() << std::endl;
+		}
 		assert(heap.empty());
 
 		//+= misc test
 		heap += Container::Vector<int>({5, 2, 1}) + 9 + Container::Vector<int>({3, 6, 0});
-		assert(heap.pop() == 0);
-		assert(heap.pop() == 1);
-		assert(heap.pop() == 2);
-		assert(heap.pop() == 3);
-		assert(heap.pop() == 5);
-		assert(heap.pop() == 6);
-		assert(heap.pop() == 9);
+		try {
+			assert(heap.pop() == 0);
+			assert(heap.pop() == 1);
+			assert(heap.pop() == 2);
+			assert(heap.pop() == 3);
+			assert(heap.pop() == 5);
+			assert(heap.pop() == 6);
+			assert(heap.pop() == 9);
+		} catch (std::exception const &e) {
+			std::cout << "Error: " << e.what() << std::endl;
+		}
 		assert(heap.empty());
 
 		//= test
@@ -256,10 +264,14 @@ class BinaryHeap {
 
 		//vector ctor test
 		BinaryHeap<int> e({3, 1, 99, 1});
-		assert(e.pop() == 1);
-		assert(e.pop() == 1);
-		assert(e.pop() == 3);
-		assert(e.pop() == 99);
+		try {
+			assert(e.pop() == 1);
+			assert(e.pop() == 1);
+			assert(e.pop() == 3);
+			assert(e.pop() == 99);
+		} catch (std::exception const &e) {
+			std::cout << "Error: " << e.what() << std::endl;
+		}
 		assert(e.empty());
 	}
 };

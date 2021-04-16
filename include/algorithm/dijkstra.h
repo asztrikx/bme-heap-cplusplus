@@ -8,13 +8,6 @@
 
 namespace Dijkstra {
 
-namespace Exception {
-	class Exception {};
-	class WeightsNotMonotonic : public Exception {};
-	class FileNotexist : public Exception {};
-	class Outofbounds : public Exception {};
-} // namespace Exception
-
 template <typename Weight>
 class Dijkstra {
 	struct Edge {
@@ -39,13 +32,11 @@ class Dijkstra {
 	}
 
 	/// @brief Read file into `graph`
-	/// @exception Dijkstra::ExceptionFileNotexist
+	/// @exception std::ios_base::failure
 	virtual void read(char const *filename) {
 		//file open
 		std::ifstream file(filename, std::ifstream::in);
-		if (file.fail()) {
-			throw Exception::FileNotexist();
-		}
+		file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 
 		//file read;
 		int length;
@@ -69,24 +60,31 @@ class Dijkstra {
 	}
 
 	/// @brief Calculates all the shortest paths from `startIndex`
+	/// @exception std::invalid_argument if sum of weights along a path don't form a monotonic function
 	void solve() {
 		Heap::BinaryHeap<Edge> priorityQueue;
+
+		//helper virtual edge
 		priorityQueue.insert(Edge{-1, 0, 0});
 		while (!priorityQueue.empty()) {
 			Edge current = priorityQueue.pop();
 
+			// already done
 			if (weights[current.to] != -1) {
 				continue;
 			}
 			weights[current.to] = current.weight;
 			parents[current.to] = current.from;
 
+			// add neighbours
 			for (int i = 0; i < graph[current.to].length(); i++) {
 				Edge next = graph[current.to][i];
 
+				// neighbour already done
 				if (weights[next.to] != -1) {
+					// can be reached in shorter distance <=>
 					if (current.weight + next.weight < weights[next.to]) {
-						throw Exception::WeightsNotMonotonic();
+						throw std::invalid_argument("weights not monotonic");
 					}
 					continue;
 				}
@@ -115,10 +113,13 @@ class Dijkstra {
 	Container::Vector<Weight> weights;
 
 	/// @brief Prints path from `startIndex` to `to`
-	/// @exception Dijkstra::ExceptionOutofbounds
+	/// @exception std::out_of_range
 	virtual void printPath(int to) {
-		if (to < 0 || to > parents.length()) {
-			throw Exception::Outofbounds();
+		if (to < 0) {
+			throw std::out_of_range("[under]");
+		}
+		if (to > parents.length()) {
+			throw std::out_of_range("[over]");
 		}
 
 		std::cout << "(" << weights[to] << "): ";
@@ -136,6 +137,8 @@ class Dijkstra {
 	/// @brief Reads then solves. First line should be the number of nodes.
 	/// each i-th line after that should first contain the number of edges from that node
 	/// and after that (edge's end, edge's weight) pairs all separated by whitespace.
+	/// @exception std::ios_base::failure if file not found or if file is malformed
+	/// @exception std::invalid_argument if sum of weights along a path don't form a monotonic function
 	Dijkstra(char const *filename, int startIndex) {
 		read(filename);
 		this->startIndex = startIndex;

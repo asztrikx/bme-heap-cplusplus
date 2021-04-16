@@ -23,10 +23,10 @@ class Vector {
   private:
 	/// @brief Changes `data`-s *allocated* size
 	/// @param capacityNew `data`'s new *allocated* size
-	/// @exception Container::ExceptionDataLoose capacityNew < length
+	/// @exception std::bad_alloc if capacityNew < length
 	void reallocate(int capacityNew) {
 		if (capacityNew < _length) {
-			throw Exception::DataLoose();
+			throw std::bad_alloc("losing data");
 		}
 
 		capacity = capacityNew;
@@ -113,10 +113,25 @@ class Vector {
 		return *this;
 	}
 
-	//operator[]
-	virtual T &operator[](int index) const {
-		if (index >= _length || index < 0) {
-			throw Exception::IndexOutofbounds();
+	/// @brief operator[]
+	/// @exception std::out_of_range
+	virtual T &operator[](int index) {
+		if (index >= _length) {
+			throw std::out_of_range("[over]");
+		}
+		if (index < 0) {
+			throw std::out_of_range("[under]");
+		}
+		return data[index];
+	}
+	/// @brief operator[] const
+	/// @exception std::out_of_range
+	virtual T const &operator[](int index) const {
+		if (index >= _length) {
+			throw std::out_of_range("[over]");
+		}
+		if (index < 0) {
+			throw std::out_of_range("[under]");
 		}
 		return data[index];
 	}
