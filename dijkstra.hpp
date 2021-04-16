@@ -1,10 +1,10 @@
 #ifndef DIJKSTRA_H
 #define DIJKSTRA_H
-#include "../heap/binaryHeap.hpp"
-#include "../container/vector.hpp"
+#include "binaryHeap.hpp"
+#include "vector.hpp"
 #include <iostream>
 #include <fstream>
-#include "../../memtrace.h"
+#include "memtrace.h"
 
 namespace Dijkstra {
 

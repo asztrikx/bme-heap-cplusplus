@@ -1,10 +1,10 @@
 #ifndef BINARYHEAP_H
 #define BINARYHEAP_H
 #include <algorithm>
-#include "../container/vector.hpp"
+#include "vector.hpp"
 #include <assert.h>
 
-#include "../../memtrace.h"
+#include "memtrace.h"
 
 namespace Heap {
 

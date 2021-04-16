@@ -1,6 +1,6 @@
-#include "include/heap/binaryHeap.hpp"
-#include "include/container/vector.hpp"
-#include "include/algorithm/dijkstra.hpp"
+#include "binaryHeap.hpp"
+#include "vector.hpp"
+#include "dijkstra.hpp"
 #include <iostream>
 #include <fstream>
 #include <assert.h>
