@@ -34,7 +34,7 @@ class BinaryHeap {
 	/// @brief Parent's value
 	/// @param index Parent's data
 	/// @exception std::out_of_range
-	T const &parent(int index) const {
+	T &parent(int index) {
 		index = parentIndex(index);
 		if (index >= data.length()) {
 			throw std::out_of_range("[over]");
@@ -44,7 +44,7 @@ class BinaryHeap {
 	/// @brief Left child's value
 	/// @param index Left child's data
 	/// @exception std::out_of_range
-	T const &childLeft(int index) const {
+	T &childLeft(int index) {
 		index = childLeftIndex(index);
 		if (index >= data.length()) {
 			throw std::out_of_range("[over]");
@@ -54,7 +54,7 @@ class BinaryHeap {
 	/// @brief Right child's value
 	/// @param index Right child node's data
 	/// @exception std::out_of_range
-	T const &childRight(int index) const {
+	T &childRight(int index) {
 		index = childRightIndex(index);
 		if (index >= data.length()) {
 			throw std::out_of_range("[over]");
@@ -65,7 +65,7 @@ class BinaryHeap {
 	/// @brief Child's index with lesser value
 	/// @param index Node's index whose child we want
 	/// @return -1 if lead node
-	int minChildIndex(int index) const {
+	int minChildIndex(int index) {
 		if (childLeftIndex(index) >= data.length() && childRightIndex(index) >= data.length()) {
 			return -1;
 		}
@@ -83,7 +83,7 @@ class BinaryHeap {
 	/// @brief Child with lesser value
 	/// @param index Node's index whose child we want
 	/// @exception std::out_of_range
-	T const &minChild(int index) const {
+	T &minChild(int index) {
 		if (minChildIndex(index) == -1) {
 			throw std::out_of_range("[under]");
 		}
