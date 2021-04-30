@@ -99,6 +99,10 @@ class Vector {
 
 	//operator=
 	virtual Vector<T> &operator=(Vector<T> const &vector) {
+		if (this == &vector) {
+			return *this;
+		}
+
 		copy(vector);
 		return *this;
 	}
@@ -164,10 +168,10 @@ class Vector {
 	}
 
 	//ctor, dtor
-	Vector() {
+	Vector() : data(nullptr) {
 		clear();
 	}
-	Vector(int size, T def) {
+	Vector(int size, T def) : data(nullptr) {
 		resize(size, def);
 	}
 	virtual ~Vector() {
@@ -175,12 +179,12 @@ class Vector {
 	}
 
 	//copy ctor
-	Vector(Vector<T> const &vector) {
+	Vector(Vector<T> const &vector) : data(nullptr) {
 		copy(vector);
 	}
 
 	//init list ctor
-	Vector(std::initializer_list<T> const &values) {
+	Vector(std::initializer_list<T> const &values) : data(nullptr) {
 		clear();
 		for (auto item = values.begin(); item != values.end(); item++) {
 			pushBack(*item);
@@ -205,9 +209,13 @@ class Vector {
 		}
 
 		//= init list test
-		Vector<int> e = {1, 2, 3, 5, 6};
+		Vector<int> e = {1, 2, 3, 4, 5, 6};
 		for (int i = 0; i < 6; i++) {
-			assert(values[i] == i + 1);
+			assert(e[i] == i + 1);
+		}
+		e = {6, 5, 4, 3, 2, 1};
+		for (int i = 0; i < 6; i++) {
+			assert(e[i] == 6 - i);
 		}
 
 		//= misc test
