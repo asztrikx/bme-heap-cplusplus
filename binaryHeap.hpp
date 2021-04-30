@@ -11,10 +11,8 @@ namespace Heap {
 //default is min
 template <typename T>
 class BinaryHeap {
-  protected:
 	Container::Vector<T> data;
 
-  private:
 	/// @brief Parent's index if exists
 	/// @param index Parent's index
 	int parentIndex(int index) const {
@@ -189,23 +187,25 @@ class BinaryHeap {
 	virtual ~BinaryHeap() {
 	}
 
-	//operator+
+	/// @brief Creates a new BinaryHeap with item added to it
 	virtual BinaryHeap<T> operator+(T const &value) {
 		BinaryHeap<T> binaryHeap;
 		binaryHeap.insert(value);
 		return binaryHeap;
 	}
+	/// @brief Creates a new BinaryHeap with the Vector's items added to the BinaryHeap
 	virtual BinaryHeap<T> operator+(Container::Vector<T> const &values) {
 		BinaryHeap<T> binaryHeap;
 		binaryHeap.insert(values);
 		return binaryHeap;
 	}
 
-	//operator+=
+	/// @brief Adds item to the BinaryHeap
 	virtual BinaryHeap<T> &operator+=(T const &value) {
 		insert(value);
 		return *this;
 	}
+	/// @brief Adds Vector's items to the BinaryHeap
 	virtual BinaryHeap<T> &operator+=(Container::Vector<T> const &values) {
 		insert(values);
 		return *this;

@@ -9,7 +9,6 @@ namespace Container {
 
 template <typename T>
 class Vector {
-  protected:
 	/// Allocated memory's size
 	int capacity;
 
@@ -19,7 +18,6 @@ class Vector {
 	/// T[capacity]
 	T *data = nullptr;
 
-  private:
 	/// @brief Changes `data`-s *allocated* size
 	/// @param capacityNew `data`'s new *allocated* size
 	/// @exception std::bad_alloc if capacityNew < length
@@ -135,13 +133,14 @@ class Vector {
 		return data[index];
 	}
 
-	//operator+
+	/// @brief Creates a new Vector with item appended to the end of it
 	virtual Vector<T> operator+(T const &value) const {
 		Vector<T> vector;
 		vector.copy(*this);
 		vector.pushBack(value);
 		return vector;
 	}
+	/// @brief Creates a new Vector with the Vector appended to the end of the Vector
 	virtual Vector<T> operator+(Vector<T> const &vector) const {
 		Vector<T> vectorNew;
 		vectorNew.copy(*this);
@@ -151,11 +150,12 @@ class Vector {
 		return vectorNew;
 	}
 
-	//operator+=
+	/// @brief Appends item to the end of the Vector
 	virtual Vector<T> &operator+=(T const &value) {
 		pushBack(value);
 		return *this;
 	}
+	/// @brief Appends Vector to the end of the Vector
 	virtual Vector<T> &operator+=(Vector<T> const &vector) {
 		for (int i = 0; i < vector.length(); i++) {
 			pushBack(vector[i]);
@@ -224,6 +224,7 @@ Vector<T> operator+(T const &value, Vector<T> const &vector) {
 	return vector + value;
 }
 
+/// @brief Format: [size] (elemen1, ...)
 template <typename T>
 std::ostream &operator<<(std::ostream &stream, Vector<T> const &vector) {
 	stream << "[" << vector.length() << "]";
