@@ -189,13 +189,13 @@ class BinaryHeap {
 
 	/// @brief Creates a new BinaryHeap with item added to it
 	virtual BinaryHeap<T> operator+(T const &value) {
-		BinaryHeap<T> binaryHeap;
+		BinaryHeap<T> binaryHeap = *this;
 		binaryHeap.insert(value);
 		return binaryHeap;
 	}
 	/// @brief Creates a new BinaryHeap with the Vector's items added to the BinaryHeap
 	virtual BinaryHeap<T> operator+(Container::Vector<T> const &values) {
-		BinaryHeap<T> binaryHeap;
+		BinaryHeap<T> binaryHeap = *this;
 		binaryHeap.insert(values);
 		return binaryHeap;
 	}
@@ -217,13 +217,26 @@ class BinaryHeap {
 
 		//insert test
 		heap.insert(4);
+		assert(heap.top() == 4);
 		assert(heap.pop() == 4);
+		try {
+			heap.top();
+			std::cout << "Not caught";
+		} catch (const std::exception &) {
+		}
+		try {
+			heap.pop();
+			std::cout << "Not caught";
+		} catch (const std::exception &) {
+		}
+
 		assert(heap.empty());
 
 		//+= vector test
 		Container::Vector<int> values = {3, 9, 7, 2, 2, 85, 36, 6};
 		heap += values;
 		try {
+			assert(heap.length() == 8);
 			assert(heap.pop() == 2);
 			assert(heap.pop() == 2);
 			assert(heap.pop() == 3);
@@ -231,15 +244,20 @@ class BinaryHeap {
 			assert(heap.pop() == 7);
 			assert(heap.pop() == 9);
 			assert(heap.pop() == 36);
-			assert(heap.pop() == 85);
+			heap.clear();
+			assert(heap.empty());
 		} catch (std::exception const &e) {
 			std::cout << "Error: " << e.what() << std::endl;
 		}
-		assert(heap.empty());
 
 		//+= misc test
 		heap += Container::Vector<int>({5, 2, 1}) + 9 + Container::Vector<int>({3, 6, 0});
+		heap = heap + Container::Vector<int>({-10, -2, -50}) + 0;
 		try {
+			assert(heap.pop() == -50);
+			assert(heap.pop() == -10);
+			assert(heap.pop() == -2);
+			assert(heap.pop() == 0);
 			assert(heap.pop() == 0);
 			assert(heap.pop() == 1);
 			assert(heap.pop() == 2);
