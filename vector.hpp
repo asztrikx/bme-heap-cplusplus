@@ -218,6 +218,12 @@ class Vector {
 			assert(e[i] == 6 - i);
 		}
 
+		//a=a
+		e = e;
+		for (int i = 0; i < 6; i++) {
+			assert(e[i] == 6 - i);
+		}
+
 		//= misc test
 		values = Vector({1, 2}) + 3 + 4 + Vector({5}) + Vector({6, 7, 8, 9, 10});
 		values += {11, 12, 13};
