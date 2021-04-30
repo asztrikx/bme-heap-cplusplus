@@ -167,15 +167,15 @@ virtual Vector<T> &operator+=(T const &value);
 virtual Vector<T> &operator+=(Vector<T> const &vector);
 
 //ctor, dtor
-Vector();
-Vector(int size, T def);
+Vector() : data(nullptr);
+Vector(int size, T def) : data(nullptr);
 virtual ~Vector();
 
 //copy ctor
-Vector(Vector<T> const &vector);
+Vector(Vector<T> const &vector) : data(nullptr);
 
 //init list ctor
-Vector(std::initializer_list<T> const &values);
+Vector(std::initializer_list<T> const &values) : data(nullptr);
 
 //unit test
 static void Test();
