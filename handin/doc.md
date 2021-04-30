@@ -23,6 +23,8 @@ Dijksta algoritmus esetében szintén fontos, hogy későbbi fejlesztésben fel�
 
 ![UML](UML.png)
 
+Az UML-t módosítottam, mivel ellentétben azzal, ahogy tervezéskor gondoltam nincs értelme protectedbe rakni a tagokat.
+
 # Algoritmusok
 
 ## Vector
@@ -110,14 +112,16 @@ int _length;
 /// T[capacity]
 T *data = nullptr;
 
-/// @brief Changes `data`-s _allocated_ size
-/// @param capacityNew `data`'s new _allocated_ size
-/// @exception Container::ExceptionDataLoose capacityNew < length
+/// @brief Changes `data`-s *allocated* size
+/// @param capacityNew `data`'s new *allocated* size
+/// @exception std::bad_alloc if capacityNew < length
 void reallocate(int capacityNew);
 
 /// @brief Deep copies `vector`
 /// @param vector vector to be copied
 void copy(Vector<T> const &vector);
+
+public:
 
 /// @brief Returns the number of stored data
 virtual int length() const;
@@ -145,15 +149,21 @@ virtual T popBack();
 virtual Vector<T> &operator=(Vector<T> const &vector);
 virtual Vector<T> &operator=(std::initializer_list<T> const &values);
 
-//operator[]
-virtual T &operator[](int index) const;
+/// @brief operator[]
+/// @exception std::out_of_range
+virtual T &operator[](int index);
+/// @brief operator[] const
+/// @exception std::out_of_range
+virtual T const &operator[](int index) const;
 
-//operator+
+/// @brief Creates a new Vector with item appended to the end of it
 virtual Vector<T> operator+(T const &value) const;
+/// @brief Creates a new Vector with the Vector appended to the end of the Vector
 virtual Vector<T> operator+(Vector<T> const &vector) const;
 
-//operator+=
+/// @brief Appends item to the end of the Vector
 virtual Vector<T> &operator+=(T const &value);
+/// @brief Appends Vector to the end of the Vector
 virtual Vector<T> &operator+=(Vector<T> const &vector);
 
 //ctor, dtor
@@ -169,42 +179,56 @@ Vector(std::initializer_list<T> const &values);
 
 //unit test
 static void Test();
+
+"friends":
+template <typename T>
+Vector<T> operator+(T const &value, Vector<T> const &vector);
+
+/// @brief Format: [size] (elemen1, ...)
+template <typename T>
+std::ostream &operator<<(std::ostream &stream, Vector<T> const &vector);
 ```
 
 ## BinaryHeap
 
 ```c++
-/// @brief Parent's index in data if exists
-/// @param index Node's index whose parent we want
+Container::Vector<T> data;
+
+private:
+
+/// @brief Parent's index if exists
+/// @param index Parent's index
 int parentIndex(int index) const;
-/// @brief Left child's index in data if exists
-/// @param index Node's index whose child we want
+/// @brief Left child's index if exists
+/// @param index Left child's index
 int childLeftIndex(int index) const;
-/// @brief Right child's index in data if exists
-/// @param index Node's index whose child we want
+/// @brief Right child's index if exists
+/// @param index Right child's index
 int childRightIndex(int index) const;
 
-/// @brief Parent's value in data
-/// @param index Node's index whose parent we want
-/// @exception Heap::ExceptionIndexOutofbounds
-T &parent(int index) const;
-/// @brief Left child's value in data
-/// @param index Node's index whose child we want
-/// @exception Heap::ExceptionIndexOutofbounds
-T &childLeft(int index) const;
-/// @brief Right child's value in data
-/// @param index Node's index whose child we want
-/// @exception Heap::ExceptionIndexOutofbounds
-T &childRight(int index) const;
+/// @brief Parent's value
+/// @param index Parent's data
+/// @exception std::out_of_range
+T &parent(int index);
+/// @brief Left child's value
+/// @param index Left child's data
+/// @exception std::out_of_range
+T &childLeft(int index);
+/// @brief Right child's value
+/// @param index Right child node's data
+/// @exception std::out_of_range
+T &childRight(int index);
 
 /// @brief Child's index with lesser value
 /// @param index Node's index whose child we want
 /// @return -1 if lead node
-int minChildIndex(int index) const;
+int minChildIndex(int index);
 /// @brief Child with lesser value
 /// @param index Node's index whose child we want
-/// @exception Heap::ExceptionIndexOutofbounds
-T &minChild(int index) const;
+/// @exception std::out_of_range
+T &minChild(int index);
+
+public:
 
 /// @brief Clears heap
 virtual void clear();
@@ -219,12 +243,12 @@ virtual void insert(Container::Vector<T> const &values);
 
 /// @brief Peek the lowest element
 /// @return Lowest element
-/// @exception Heap::ExceptionEmpty
+/// @exception std::out_of_range if empty
 virtual T top() const;
 
 /// @brief Remove the lowest element
 /// @return Lowest element
-/// @exception Heap::ExceptionEmpty
+/// @exception std::out_of_range if empty
 virtual T pop();
 
 /// @brief Is heap empty
@@ -235,7 +259,7 @@ virtual int length() const;
 
 /// @brief Sorts the given vector
 /// @param vector vector to be sorted
-static void Sort(Container::Vector<T> const &vector);
+static void Sort(Container::Vector<T> &vector);
 
 //ctor
 BinaryHeap();
@@ -244,33 +268,56 @@ BinaryHeap(Container::Vector<T> const &vector);
 //dtor
 virtual ~BinaryHeap();
 
-//operator+
+/// @brief Creates a new BinaryHeap with item added to it
 virtual BinaryHeap<T> operator+(T const &value);
+/// @brief Creates a new BinaryHeap with the Vector's items added to the BinaryHeap
 virtual BinaryHeap<T> operator+(Container::Vector<T> const &values);
 
-//operator+=
+/// @brief Adds item to the BinaryHeap
 virtual BinaryHeap<T> &operator+=(T const &value);
+/// @brief Adds Vector's items to the BinaryHeap
 virtual BinaryHeap<T> &operator+=(Container::Vector<T> const &values);
 
 //unit test
 static void Test();
+
+"friends":
+template <typename T>
+BinaryHeap<T> operator+(T const &value, BinaryHeap<T> const &binaryHeap);
+
+template <typename T>
+BinaryHeap<T> operator+(Container::Vector<T> const &values, BinaryHeap<T> const &binaryHeap);
 ```
 
 ## Dijkstra
 
 ```c++
+struct Edge {
+	int from;
+	int to;
+	Weight weight;
+	bool operator<(Edge other) const {
+		return weight < other.weight;
+	}
+};
+
+Container::Vector<Container::Vector<Edge>> graph;
+
 /// @brief Helper function for `printPath`
 virtual void printPathRec(int to);
 
 /// @brief Read file into `graph`
-/// @exception Dijkstra::ExceptionFileNotexist
+/// @exception std::ios_base::failure
 virtual void read(char const *filename);
 
 /// @brief Calculates all the shortest paths from `startIndex`
+/// @exception std::invalid_argument if sum of weights along a path don't form a monotonic function
 void solve();
 
 /// Node's index from which the shortest paths are known
 int startIndex;
+
+public:
 
 /// @brief Number of nodes
 int length() const;
@@ -282,12 +329,14 @@ Container::Vector<int> parents;
 Container::Vector<Weight> weights;
 
 /// @brief Prints path from `startIndex` to `to`
-/// @exception Dijkstra::ExceptionOutofbounds
+/// @exception std::out_of_range
 virtual void printPath(int to);
 
 //ctor
 /// @brief Reads then solves. First line should be the number of nodes.
 /// each i-th line after that should first contain the number of edges from that node
 /// and after that (edge's end, edge's weight) pairs all separated by whitespace.
+/// @exception std::ios_base::failure if file not found or if file is malformed
+/// @exception std::invalid_argument if sum of weights along a path don't form a monotonic function
 Dijkstra(char const *filename, int startIndex);
 ```
